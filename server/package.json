@@ -1,0 +1,29 @@
+{
+  "name": "meal-planner-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/start.js",
+  "scripts": {
+    "test": "lab -a code -v",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon --watch app -L",
+    "client": "cd ../client && npm start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "boom": "^7.2.0",
+    "glue": "^5.0.0",
+    "hapi": "^17.5.2",
+    "lodash": "^4.17.10",
+    "pg": "^7.4.3"
+  },
+  "devDependencies": {
+    "code": "^5.2.0",
+    "concurrently": "^3.6.0",
+    "lab": "^15.5.0",
+    "nodemon": "^1.18.3",
+    "sinon": "^6.1.4"
+  }
+}
