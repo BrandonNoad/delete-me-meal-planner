@@ -1,19 +1,28 @@
 'use strict';
 
-exports.getRoutes = (server, options) => [
-    {
-        method: 'GET',
-        path: '/scheduledRecipes',
-        async handler(request, h) {
+const Joi = require('joi');
 
-            const date = request.query.date;
+exports.getRoutes = (server, options) => {
 
-            // TODO: replace with model fn
-            const  getForDate = async (date) => ({ results: [], totalCount: 0 });
+    const optionsSchema = {
+        handlers: Joi.object({
+            scheduledRecipe: Joi.object().required()
+        }).required()
+    };
 
-            const { results } = await getForDate(date);
+    Joi.assert(
+        options,
+        optionsSchema,
+        new Error('Error registering scheduled-recipe-routes plugin')
+    );
 
-            return results;
+    const { getForDate } = options.handlers.scheduledRecipe;
+
+    return [
+        {
+            method: 'GET',
+            path: '/scheduledRecipes',
+            handler: getForDate
         }
-    }
-];
+    ];
+};

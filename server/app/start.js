@@ -2,15 +2,22 @@
 
 const Server = require('./server');
 const Db = require('./middleware/db');
+const ApiFactory = require('./util/api-factory');
 
-const internals = {};
+const routeRegistrationOptions = { prefix: '/api/v1.0' };
 
-internals.routeRegistrationOptions = {
-    prefix: '/api/v1.0'
+const pluginOptions = {
+    routes: {
+        scheduledRecipe: {
+           handlers: {
+               scheduledRecipe: ApiFactory.make('scheduled-recipe', 'handler')
+           }
+        }
+    }
 };
 
 // manifest specifying the hapi server options, connections, and registrations
-internals.manifest = {
+const manifest = {
     server: {
         host: 'localhost',
         port: 3001,
@@ -25,12 +32,16 @@ internals.manifest = {
     },
     register: {
         plugins: [
-            { plugin: './routes/scheduled-recipe', routes: internals.routeRegistrationOptions }
+            {
+                plugin: './routes/scheduled-recipe',
+                options: pluginOptions.routes.scheduledRecipe,
+                routes: routeRegistrationOptions
+            }
         ]
     }
 };
 
-internals.composeOptions = {
+const composeOptions = {
 
     // File-system path string that is used to resolve loading modules with require. Used in
     // register.plugins[].
@@ -39,7 +50,7 @@ internals.composeOptions = {
 };
 
 // Exit gracefully on various events/signals
-internals.exitHandler = function (options, err) {
+const exitHandler = (options, err) => {
 
     if (err) {
         console.log('error', err.stack);
@@ -59,19 +70,19 @@ internals.exitHandler = function (options, err) {
 };
 
 // clean up when app is closing
-process.on('exit', internals.exitHandler.bind(null, { cleanUp: true }));
+process.on('exit', exitHandler.bind(null, { cleanUp: true }));
 
 // catches ctrl+c event
-process.on('SIGINT', internals.exitHandler.bind(null, { exit: true }));
+process.on('SIGINT', exitHandler.bind(null, { exit: true }));
 
 // catches uncaught exceptions
-process.on('uncaughtException', internals.exitHandler.bind(null, { exit: true }));
+process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 // the SIGUSR2 signal is used by nodemon to restart
 // https://github.com/remy/nodemon#controlling-shutdown-of-your-script
 process.once('SIGUSR2', () => {
 
-    internals.exitHandler({ cleanUp: true });
+    exitHandler({ cleanUp: true });
     process.kill(process.pid, 'SIGUSR2');
 });
 
@@ -80,7 +91,7 @@ process.once('SIGUSR2', () => {
 
     try {
 
-        const server = await Server.init(internals.manifest, internals.composeOptions);
+        const server = await Server.init(manifest, composeOptions);
 
         server.log(['info'], 'Server started at: ' + server.info.uri);
 
@@ -90,6 +101,6 @@ process.once('SIGUSR2', () => {
         console.log('error', 'Server failure: ' + err);
 
         // clean up!
-        internals.exitHandler({ cleanUp: true });
+        exitHandler({ cleanUp: true });
     }
 }());
