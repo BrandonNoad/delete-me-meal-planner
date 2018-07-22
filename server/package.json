@@ -6,7 +6,7 @@
   "scripts": {
     "test": "lab -a code -v",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon --watch app -L",
+    "server": "nodemon --watch app",
     "client": "cd ../client && npm start"
   },
   "author": "",
