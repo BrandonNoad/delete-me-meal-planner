@@ -62,7 +62,7 @@ const exitHandler = (options, err) => {
     if (options.cleanUp) {
 
         // clean up!
-        // Db.end();
+        // TODO: clean up db using ORM?
     }
 
     if (options.exit) {

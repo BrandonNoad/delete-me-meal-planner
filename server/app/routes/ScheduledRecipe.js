@@ -24,6 +24,8 @@ const getRoutes = (server, options) => {
     const { fetchForDate } = options.handlers.scheduledRecipe;
 
     return [
+
+        // TODO: validate query params.
         {
             method: 'GET',
             path: '/scheduledRecipes',
