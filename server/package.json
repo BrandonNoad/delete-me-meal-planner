@@ -6,8 +6,9 @@
   "scripts": {
     "test": "lab -a code -v",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon --watch app",
-    "client": "cd ../client && npm start"
+    "server": "npm run migrate && nodemon --watch app",
+    "client": "cd ../client && npm start",
+    "migrate": "knex migrate:latest"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "concurrently": "^3.6.0",
     "lab": "^15.5.0",
     "nodemon": "^1.18.3",
-    "sinon": "^6.1.4"
+    "sinon": "^6.1.4",
+    "sqlite3": "^4.0.2"
   }
 }

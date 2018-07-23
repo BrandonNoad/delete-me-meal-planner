@@ -2,11 +2,10 @@
 
 const Server = require('./server');
 const ApiFactory = require('./util/ApiFactory');
-const initOrm = require('./middleware/initOrm');
-const dbConfig = require('./dbConfig');
+const orm = require('./orm');
 
 // Initialize the ORM.
-initOrm(dbConfig);
+orm.init();
 
 const routeRegistrationOptions = { prefix: '/api/v1.0' };
 
