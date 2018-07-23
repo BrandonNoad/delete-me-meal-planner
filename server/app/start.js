@@ -1,8 +1,12 @@
 'use strict';
 
 const Server = require('./server');
-const Db = require('./middleware/db');
-const ApiFactory = require('./util/api-factory');
+const ApiFactory = require('./util/ApiFactory');
+const initOrm = require('./middleware/initOrm');
+const dbConfig = require('./dbConfig');
+
+// Initialize the ORM.
+initOrm(dbConfig);
 
 const routeRegistrationOptions = { prefix: '/api/v1.0' };
 
@@ -10,7 +14,7 @@ const pluginOptions = {
     routes: {
         scheduledRecipe: {
            handlers: {
-               scheduledRecipe: ApiFactory.make('scheduled-recipe', 'handler')
+               scheduledRecipe: ApiFactory.make('scheduledRecipe', 'handler')
            }
         }
     }
@@ -33,7 +37,7 @@ const manifest = {
     register: {
         plugins: [
             {
-                plugin: './routes/scheduled-recipe',
+                plugin: './routes/ScheduledRecipe',
                 options: pluginOptions.routes.scheduledRecipe,
                 routes: routeRegistrationOptions
             }
@@ -59,7 +63,7 @@ const exitHandler = (options, err) => {
     if (options.cleanUp) {
 
         // clean up!
-        Db.end();
+        // Db.end();
     }
 
     if (options.exit) {
@@ -86,7 +90,7 @@ process.once('SIGUSR2', () => {
     process.kill(process.pid, 'SIGUSR2');
 });
 
-// start the server
+// Start the server
 (async function startServer() {
 
     try {

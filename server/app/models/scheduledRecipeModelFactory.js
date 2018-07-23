@@ -3,9 +3,9 @@
 module.exports = (scheduledRecipeDao) => ({
 
     // TODO: paginate
-    async getForDate(date) {
+    async fetchForDate(date) {
 
-        const results = await scheduledRecipeDao.getForDate(date);
+        const results = await scheduledRecipeDao.fetchForDate(date);
 
         return {
             results,

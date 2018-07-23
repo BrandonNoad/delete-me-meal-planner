@@ -2,11 +2,11 @@
 
 module.exports = (scheduledRecipeModel) => ({
 
-    async getForDate(request, h) {
+    async fetchForDate(request, h) {
 
         const date = request.query.date;
 
-        const { results } = await scheduledRecipeModel.getForDate(date);
+        const { results } = await scheduledRecipeModel.fetchForDate(date);
 
         return results;
     }

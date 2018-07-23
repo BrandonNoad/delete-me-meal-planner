@@ -18,26 +18,26 @@ const makeFactory = catalog => (resource, product) => {
     return resourceFactory[product].instance;
 };
 
-const Db = require('../middleware/db');
+const orm = require('../orm');
 
 // Catalog of products that this factory can make.
 const catalog = {
-    'scheduled-recipe': {
+    scheduledRecipe: {
         dao() {
 
-            return require('../daos/scheduled-recipe')(Db);
+            return require('../daos/scheduledRecipeDaoFactory')(orm);
         },
         model() {
 
-            const dao = make('scheduled-recipe', 'dao');
+            const dao = make('scheduledRecipe', 'dao');
 
-            return require('../models/scheduled-recipe')(dao);
+            return require('../models/scheduledRecipeModelFactory')(dao);
         },
         handler() {
 
-            const model = make('scheduled-recipe', 'model');
+            const model = make('scheduledRecipe', 'model');
 
-            return require('../handlers/scheduled-recipe')(model);
+            return require('../handlers/scheduledRecipeHandlersFactory')(model);
         }
     }
 };

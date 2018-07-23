@@ -1,8 +1,13 @@
 'use strict';
 
 const Joi = require('joi');
+const makeRoutesPluginFactory = require('./makeRoutesPluginFactory');
 
-exports.getRoutes = (server, options) => {
+const factory = makeRoutesPluginFactory('scheduled-recipe-routes');
+
+exports.factory = factory;
+
+const getRoutes = (server, options) => {
 
     const optionsSchema = {
         handlers: Joi.object({
@@ -16,13 +21,18 @@ exports.getRoutes = (server, options) => {
         new Error('Error registering scheduled-recipe-routes plugin')
     );
 
-    const { getForDate } = options.handlers.scheduledRecipe;
+    const { fetchForDate } = options.handlers.scheduledRecipe;
 
     return [
         {
             method: 'GET',
             path: '/scheduledRecipes',
-            handler: getForDate
+            handler: fetchForDate
         }
     ];
 };
+
+// Make the plugin by injecting getRoutes.
+const plugin = factory(getRoutes);
+
+exports.plugin = plugin;
