@@ -4,7 +4,8 @@
   "description": "",
   "main": "app/start.js",
   "scripts": {
-    "test": "lab -a code -v",
+    "test": "lab -a code -t 100 -v",
+    "test-cov-html": "lab -r html -o coverage.html",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run migrate && nodemon --watch app",
     "client": "cd ../client && npm start",

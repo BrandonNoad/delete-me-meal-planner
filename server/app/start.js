@@ -1,7 +1,7 @@
 'use strict';
 
 const Server = require('./server');
-const ApiFactory = require('./util/ApiFactory');
+const apiFactory = require('./util/apiFactory');
 const orm = require('./orm');
 
 // Initialize the ORM.
@@ -13,7 +13,7 @@ const pluginOptions = {
     routes: {
         scheduledRecipe: {
            handlers: {
-               scheduledRecipe: ApiFactory.make('scheduledRecipe', 'handler')
+               scheduledRecipe: apiFactory('scheduledRecipe', 'handler')
            }
         }
     }
@@ -96,12 +96,12 @@ process.once('SIGUSR2', () => {
 
         const server = await Server.init(manifest, composeOptions);
 
-        server.log(['info'], 'Server started at: ' + server.info.uri);
+        server.log(['info'], `Server started at: ${server.info.uri}`);
 
     } catch (err) {
 
         // server failed to start properly...abort
-        console.log('error', 'Server failure: ' + err);
+        console.log('error', `Server failure: ${err}`);
 
         // clean up!
         exitHandler({ cleanUp: true });
