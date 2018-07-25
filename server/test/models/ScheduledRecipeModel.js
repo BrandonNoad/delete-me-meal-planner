@@ -6,11 +6,11 @@ const { expect, fail } = require('code');
 
 describe('Scheduled Recipe Model', () => {
 
-    const scheduledRecipeModelFactory = require('../../app/models/scheduledRecipeModelFactory');
+    const scheduledRecipeModelFactory = require('../../app/domain-models/scheduledRecipeModelFactory');
 
-    const ScheduledRecipeDao = {};
+    const ScheduledRecipeRepository = {};
 
-    const ScheduledRecipeModel = scheduledRecipeModelFactory(ScheduledRecipeDao);
+    const ScheduledRecipeModel = scheduledRecipeModelFactory(ScheduledRecipeRepository);
 
     describe('fetchForDate', () => {
 
@@ -22,7 +22,7 @@ describe('Scheduled Recipe Model', () => {
 
             before(() => {
 
-                ScheduledRecipeDao.fetchForDate = (date) => Promise.resolve(results);
+                ScheduledRecipeRepository.fetchForDate = (date) => Promise.resolve(results);
             });
 
             context('and there is at least one recipe scheduled on the given date', () => {
@@ -70,7 +70,7 @@ describe('Scheduled Recipe Model', () => {
 
             before(() => {
 
-                ScheduledRecipeDao.fetchForDate = (date) => Promise.reject(new Error('dao operation failed!'));
+                ScheduledRecipeRepository.fetchForDate = (date) => Promise.reject(new Error('repository operation failed!'));
             });
 
             it('should return a promise that is rejected', async () => {

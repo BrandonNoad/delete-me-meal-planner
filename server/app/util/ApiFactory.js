@@ -1,20 +1,19 @@
 'use strict';
 
 const apiFactoryFactory = require('./apiFactoryFactory');
-const orm = require('../orm');
 
 // Catalog of products that apiFactory can make (for production).
 const catalog = {
     scheduledRecipe: {
-        dao() {
+        repository() {
 
-            return require('../daos/scheduledRecipeDaoFactory')(orm);
+            return require('../repositories/ScheduledRecipeRepository');
         },
         model() {
 
-            const dao = apiFactory('scheduledRecipe', 'dao');
+            const repository = apiFactory('scheduledRecipe', 'repository');
 
-            return require('../models/scheduledRecipeModelFactory')(dao);
+            return require('../domain-models/scheduledRecipeModelFactory')(repository);
         },
         handler() {
 

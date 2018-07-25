@@ -10,19 +10,17 @@ describe('apiFactory', function () {
 
     const catalog = {
         widget: {
-            dao() {
+            repository() {
 
-                const daoFactory = () => ({});
-
-                return daoFactory();
+                return {};
             },
             model() {
 
-                const modelFactory = dao => ({});
+                const modelFactory = repository => ({});
 
-                const dao = apiFactory('widget', 'dao');
+                const repository = apiFactory('widget', 'repository');
 
-                return modelFactory(dao);
+                return modelFactory(repository);
             },
             handler() {
 
@@ -40,7 +38,7 @@ describe('apiFactory', function () {
     context('when given a product that exists in the catalog', function () {
 
         const resourceName = 'widget';
-        const productName = 'dao';
+        const productName = 'model';
 
         it('should make singletons', function () {
 

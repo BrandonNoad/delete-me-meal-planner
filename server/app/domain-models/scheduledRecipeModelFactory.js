@@ -1,11 +1,11 @@
 'use strict';
 
-module.exports = (ScheduledRecipeDao) => ({
+module.exports = (ScheduledRecipeRepository) => ({
 
     // TODO: paginate
     async fetchForDate(date) {
 
-        const results = await ScheduledRecipeDao.fetchForDate(date);
+        const results = await ScheduledRecipeRepository.fetchForDate(date);
 
         return {
             results,

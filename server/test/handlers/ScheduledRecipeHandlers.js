@@ -68,7 +68,7 @@ describe('Scheduled Recipe Handlers', () => {
 
             before(() => {
 
-                ScheduledRecipeModel.fetchForDate = (date) => Promise.reject(new Error('dao operation failed!'));
+                ScheduledRecipeModel.fetchForDate = (date) => Promise.reject(new Error('model method failed!'));
             });
 
             it('should return a promise that is rejected', async () => {
