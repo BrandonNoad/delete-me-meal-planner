@@ -1,7 +1,9 @@
 /node_modules
 
 meal_planner.sqlite3
+coverage.html
 
 # misc
 .DS_Store
 npm-debug.log*
+
