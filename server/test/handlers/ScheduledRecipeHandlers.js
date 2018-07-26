@@ -8,10 +8,6 @@ describe('Scheduled Recipe Handlers', () => {
 
     const scheduledRecipeHandlersFactory = require('../../app/handlers/scheduledRecipeHandlersFactory');
 
-    const ScheduledRecipeModel = {};
-
-    const ScheduledRecipeHandlers = scheduledRecipeHandlersFactory(ScheduledRecipeModel);
-
     describe('fetchForDate', () => {
 
         const request = {
@@ -20,28 +16,32 @@ describe('Scheduled Recipe Handlers', () => {
             }
         };
 
-        context('when the model method succeeds', () => {
+        context('when the helper function succeeds', () => {
 
             let results;
 
-            before(() => {
+            const fetchScheduledRecipesForDate = (date) =>
+                    Promise.resolve({ results, totalCount: results.length });
 
-                ScheduledRecipeModel.fetchForDate = (date) => Promise.resolve({ results, totalCount: results.length });
-            });
+            const ScheduledRecipeHandlers =
+                    scheduledRecipeHandlersFactory({ fetchScheduledRecipesForDate });
 
             context('and there is at least one recipe scheduled on the given date', () => {
 
-                results = [
-                    {
-                        id: 42,
-                        recipe: {
-                            id: 23,
-                            name: 'nom nom',
-                            url: 'https://nomnom.com'
-                        },
-                        dateScheduled: request.query.date
-                    }
-                ];
+                before(() => {
+
+                    results = [
+                        {
+                            id: 42,
+                            recipe: {
+                                id: 23,
+                                name: 'nom nom',
+                                url: 'https://nomnom.com'
+                            },
+                            dateScheduled: request.query.date
+                        }
+                    ];
+                });
 
                 it('should return a promise that is fulfilled with an array of scheduledRecipe objects', async () => {
 
@@ -53,7 +53,10 @@ describe('Scheduled Recipe Handlers', () => {
 
             context('and there are no recipes scheduled on the given date', () => {
 
-                results = [];
+                before(() => {
+
+                    results = [];
+                });
 
                 it('should return a promise that is fulfilled with an empty array', async () => {
 
@@ -64,12 +67,13 @@ describe('Scheduled Recipe Handlers', () => {
             });
         });
 
-        context('when the model method fails', () => {
+        context('when the helper function fails', () => {
 
-            before(() => {
+            const fetchScheduledRecipesForDate = (date) =>
+                    Promise.reject(new Error('helper function failed!'));
 
-                ScheduledRecipeModel.fetchForDate = (date) => Promise.reject(new Error('model method failed!'));
-            });
+            const ScheduledRecipeHandlers =
+                    scheduledRecipeHandlersFactory({ fetchScheduledRecipesForDate });
 
             it('should return a promise that is rejected', async () => {
 

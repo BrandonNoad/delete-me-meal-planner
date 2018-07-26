@@ -4,15 +4,16 @@ const Lab = require('lab');
 const { before, describe, describe: context, it } = exports.lab = Lab.script();
 const { expect, fail } = require('code');
 
-describe('ScheduledRecipeModel', () => {
+describe('Handler Helpers', () => {
 
-    const scheduledRecipeModelFactory = require('../../app/domain-models/scheduledRecipeModelFactory');
+    const { fetchScheduledRecipesForDateFactory } =
+            require('../../../app/handlers/helpers/factories');
 
     const ScheduledRecipeRepository = {};
 
-    const ScheduledRecipeModel = scheduledRecipeModelFactory(ScheduledRecipeRepository);
+    const fetchScheduledRecipesForDate = fetchScheduledRecipesForDateFactory(ScheduledRecipeRepository);
 
-    describe('fetchForDate', () => {
+    describe('fetchScheduledRecipesForDate', () => {
 
         const date = '2018-07-25';
 
@@ -41,7 +42,7 @@ describe('ScheduledRecipeModel', () => {
 
                 it('should return a promise that is fulfilled with an object that has a an array of scheduledRecipe objects as the results and the length of the results array as the totalCount', async () => {
 
-                    const result = await ScheduledRecipeModel.fetchForDate(date);
+                    const result = await fetchScheduledRecipesForDate(date);
 
                     expect(result).to.equal({
                         results,
@@ -56,7 +57,7 @@ describe('ScheduledRecipeModel', () => {
 
                 it('should return a promise that is fulfilled with an object that has a an empty array as the results and 0 as the totalCount', async () => {
 
-                    const result = await ScheduledRecipeModel.fetchForDate(date);
+                    const result = await fetchScheduledRecipesForDate(date);
 
                     expect(result).to.equal({
                         results: [],
@@ -77,7 +78,7 @@ describe('ScheduledRecipeModel', () => {
 
                 try {
 
-                    await ScheduledRecipeModel.fetchForDate(date);
+                    await fetchScheduledRecipesForDate(date);
 
                     fail('This should never happen!');
 

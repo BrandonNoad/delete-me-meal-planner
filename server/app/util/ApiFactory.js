@@ -5,21 +5,11 @@ const apiFactoryFactory = require('./apiFactoryFactory');
 // Catalog of products that apiFactory can make (for production).
 const catalog = {
     scheduledRecipe: {
-        repository() {
-
-            return require('../repositories/ScheduledRecipeRepository');
-        },
-        model() {
-
-            const repository = apiFactory('scheduledRecipe', 'repository');
-
-            return require('../domain-models/scheduledRecipeModelFactory')(repository);
-        },
         handler() {
 
-            const model = apiFactory('scheduledRecipe', 'model');
+            const helpers = require('../handlers/helpers');
 
-            return require('../handlers/scheduledRecipeHandlersFactory')(model);
+            return require('../handlers/scheduledRecipeHandlersFactory')(helpers);
         }
     }
 };
