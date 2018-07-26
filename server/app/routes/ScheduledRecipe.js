@@ -1,13 +1,13 @@
 'use strict';
 
-const Joi = require('joi');
+const JoiDateExtensions = require('joi-date-extensions');
+const Joi = require('joi').extend(JoiDateExtensions);
+
 const makeRoutesPluginFactory = require('./makeRoutesPluginFactory');
 
-const factory = makeRoutesPluginFactory('scheduled-recipe-routes');
+const factory = exports.factory = makeRoutesPluginFactory('scheduled-recipe-routes');
 
-exports.factory = factory;
-
-const getRoutes = (server, options) => {
+const getRoutes = exports.getRoutes = (options) => {
 
     const optionsSchema = {
         handlers: Joi.object({
@@ -24,17 +24,23 @@ const getRoutes = (server, options) => {
     const { fetchForDate } = options.handlers.scheduledRecipe;
 
     return [
-
-        // TODO: validate query params.
         {
             method: 'GET',
             path: '/scheduledRecipes',
-            handler: fetchForDate
+            handler: fetchForDate,
+            options: {
+                validate: {
+                    query: {
+
+                        // use .raw() instead of .options({ convert: false })
+                        // https://github.com/hapijs/joi/issues/762
+                        date: Joi.date().format('YYYY-MM-DD').required().raw()
+                    }
+                }
+            }
         }
     ];
 };
 
 // Make the plugin by injecting getRoutes.
-const plugin = factory(getRoutes);
-
-exports.plugin = plugin;
+exports.plugin = factory(getRoutes);

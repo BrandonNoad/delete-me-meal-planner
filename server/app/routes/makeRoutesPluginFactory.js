@@ -6,7 +6,7 @@ const makeRoutesPluginFactory = name => getRoutes => ({
     async register(server, options) {
 
         // getRoutes() may throw if the options are not configured correctly.
-        server.route(getRoutes(server, options));
+        server.route(getRoutes(options));
     }
 });
 

@@ -4,7 +4,7 @@ const Lab = require('lab');
 const { before, describe, describe: context, it } = exports.lab = Lab.script();
 const { expect, fail } = require('code');
 
-describe('Scheduled Recipe Model', () => {
+describe('ScheduledRecipeModel', () => {
 
     const scheduledRecipeModelFactory = require('../../app/domain-models/scheduledRecipeModelFactory');
 
@@ -16,7 +16,7 @@ describe('Scheduled Recipe Model', () => {
 
         const date = '2018-07-25';
 
-        context('when the data is accessed successfully', () => {
+        context('when the data is accessed successfully from the repository', () => {
 
             let results;
 
