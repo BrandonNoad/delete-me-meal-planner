@@ -22,4 +22,4 @@ const catalog = {
  * @return object returns an instance of the product that was asked to be made. May throw an error
  * if the product does not exist in the catalog.
  */
-const apiFactory = module.exports = apiFactoryFactory(catalog);
+module.exports = apiFactoryFactory(catalog);
