@@ -6,6 +6,8 @@ import { ListPlaceholder } from 'grommet-addons';
 
 const DailyMealPlan = ({ moment, scheduledRecipes }) => {
 
+    const isToday = Moment().isSame(moment, 'day');
+
     let list = <ListPlaceholder emptyMessage="No Recipes!" unfilteredTotal={0} />;
 
     if (scheduledRecipes.length) {
@@ -22,9 +24,9 @@ const DailyMealPlan = ({ moment, scheduledRecipes }) => {
     }
 
     return (
-        <Tile size={{ width: 'small', height: 'medium' }} style={{ border: '1px solid #ddd' }} align="start" pad="small" colorIndex={Moment().isSame(moment, 'day') && 'grey-4-a'}>
-            <Label size="small" uppercase={true}>{moment.format('ddd')}</Label>
-            <Heading tag="h2" strong={true} margin="small" style={{ marginTop: 0 }}>{moment.format('D')}</Heading>
+        <Tile size={{ width: 'small', height: 'medium' }} style={{ border: '1px solid #ddd' }} align="start" pad="small" colorIndex={isToday && 'grey-4-a'}>
+            <Label size="small" uppercase={true} style={{ color: isToday && '#e6734b' }}>{moment.format('ddd')}</Label>
+            <Heading tag="h2" strong={true} margin="small" style={{ marginTop: 0, color: isToday && '#e6734b' }}>{moment.format('D')}</Heading>
             <Box flex="grow" justify="between" style={{ width: '100%' }}>
                 {list}
                 <Box direction="row" justify="end">
