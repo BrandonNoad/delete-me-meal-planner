@@ -25,7 +25,7 @@ describe('scheduled-recipe-routes plugin', () => {
             }
         };
 
-        const { plugin } = require('../../app/routes/ScheduledRecipe');
+        const { plugin } = require('../../../app/routes/ScheduledRecipe');
 
         const plugins = [
             {

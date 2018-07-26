@@ -5,7 +5,7 @@ const { expect, fail } = require('code');
 
 module.exports = ({ describe: context, it }) => () => {
 
-    const { factory } = require('../../app/routes/ScheduledRecipe');
+    const { factory } = require('../../../app/routes/ScheduledRecipe');
 
     context('when getRoutes throws', () => {
 
