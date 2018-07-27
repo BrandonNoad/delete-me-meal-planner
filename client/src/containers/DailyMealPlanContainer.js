@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchScheduledRecipesForDay } from '../actions';
-import { getScheduledRecipesForDay, getDayMeta } from '../reducers/scheduledRecipes';
+import { getScheduledRecipesForDay, getDailyMetaForDay } from '../reducers/scheduledRecipes';
 import DailyMealPlan from '../components/DailyMealPlan';
 
 class DailyMealPlanContainer extends Component {
 
     fetchData() {
 
-        this.props.fetchScheduledRecipes(this.props.moment);
+        const { moment, fetchScheduledRecipes } = this.props;
+
+        fetchScheduledRecipes(moment);
     }
 
     componentDidMount() {
@@ -25,6 +27,7 @@ class DailyMealPlanContainer extends Component {
 
         const { dayMeta, scheduledRecipes } = this.props;
 
+        // TODO: move the loading indicator inside the tile
         if (dayMeta !== undefined &&
             dayMeta.isFetching &&
             !scheduledRecipes.length) {
@@ -32,6 +35,7 @@ class DailyMealPlanContainer extends Component {
             return <p>Loading...</p>;
         }
 
+        // TODO: move the error msg inside the tile
         if (dayMeta !== undefined &&
             dayMeta.errorMessage &&
             !scheduledRecipes.length) {
@@ -46,7 +50,7 @@ class DailyMealPlanContainer extends Component {
 const mapStateToProps = (state, ownProps) => (
     {
         scheduledRecipes: getScheduledRecipesForDay(state.scheduledRecipes, ownProps.moment),
-        dayMeta: getDayMeta(state.scheduledRecipes, ownProps.moment)
+        dayMeta: getDailyMetaForDay(state.scheduledRecipes, ownProps.moment)
     }
 );
 

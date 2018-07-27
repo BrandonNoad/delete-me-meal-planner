@@ -1,12 +1,12 @@
 import Moment from 'moment';
-import { UPDATE_MOMENT } from '../actions';
+import * as actionTypes from '../actions/actionTypes';
 
-const updateMoment = (state, goto) => {
+export const updateMomentFactory = (getTodayMoment) => (state, goto) => {
 
     switch (goto) {
 
         case 'today':
-            return Moment();
+            return getTodayMoment();
 
         case 'next-week':
             return Moment(state).add(7, 'days');
@@ -19,11 +19,13 @@ const updateMoment = (state, goto) => {
     }
 };
 
-const moment = (state = Moment(), action) => {
+export const momentFactory = (getTodayMoment) => (state = getTodayMoment(), action) => {
+
+    const updateMoment = updateMomentFactory(getTodayMoment);
 
     switch (action.type) {
 
-        case UPDATE_MOMENT:
+        case actionTypes.UPDATE_MOMENT:
             return updateMoment(state, action.goto);
 
         default:
@@ -31,4 +33,4 @@ const moment = (state = Moment(), action) => {
     }
 };
 
-export default moment;
+export default momentFactory(Moment);

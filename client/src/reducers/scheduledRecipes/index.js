@@ -9,20 +9,28 @@ const scheduledRecipes = combineReducers({
 
 export default scheduledRecipes;
 
-export const getScheduledRecipesForDay = (state, moment) => {
+// export for testing
+export const getScheduledRecipesForDayFactory = (getScheduledRecipesForDate) =>
+        (state, moment) => {
 
     const { groupedByDate } = state;
 
     const date = moment.format('YYYY-MM-DD');
 
-    return fromGroupedByDate.getScheduledRecipesForDate(groupedByDate, date);
+    return getScheduledRecipesForDate(groupedByDate, date);
 };
 
-export const getDayMeta = (state, moment) => {
+export const getScheduledRecipesForDay =
+        getScheduledRecipesForDayFactory(fromGroupedByDate.getScheduledRecipesForDate);
+
+// export for testing
+export const getDailyMetaForDayFactory = (getDailyMetaForDate) => (state, moment) => {
 
     const { dailyMeta } = state;
 
     const date = moment.format('YYYY-MM-DD');
 
-    return fromDailyMeta.getDayMeta(dailyMeta, date);
+    return getDailyMetaForDate(dailyMeta, date);
 };
+
+export const getDailyMetaForDay = getDailyMetaForDayFactory(fromDailyMeta.getDailyMetaForDate);

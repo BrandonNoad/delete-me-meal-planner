@@ -1,15 +1,14 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
-import { FETCH_SCHEDULED_RECIPES_REQUEST, FETCH_SCHEDULED_RECIPES_SUCCESS,
-        FETCH_SCHEDULED_RECIPES_FAILURE } from '../../actions';
+import * as actionTypes from '../../actions/actionTypes';
 
 const dailyMeta = (state = {}, action) => {
 
     switch (action.type) {
 
-        case FETCH_SCHEDULED_RECIPES_REQUEST:
-        case FETCH_SCHEDULED_RECIPES_SUCCESS:
-        case FETCH_SCHEDULED_RECIPES_FAILURE:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
             return _.assign(
                 {},
                 state,
@@ -23,15 +22,15 @@ const dailyMeta = (state = {}, action) => {
 
 export default dailyMeta;
 
-const isFetching = (state = false, action) => {
+export const isFetching = (state = false, action) => {
 
     switch (action.type) {
 
-        case FETCH_SCHEDULED_RECIPES_REQUEST:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
             return true;
 
-        case FETCH_SCHEDULED_RECIPES_SUCCESS:
-        case FETCH_SCHEDULED_RECIPES_FAILURE:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
             return false;
 
         default:
@@ -39,28 +38,47 @@ const isFetching = (state = false, action) => {
     }
 };
 
-const isCache = (state = false, action) => {
+export const isCache = (state = false, action) => {
 
     switch (action.type) {
 
-        case FETCH_SCHEDULED_RECIPES_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
             return true;
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
+            return false;
+
 
         default:
             return state;
     }
 };
 
-const errorMessage = (state = null, action) => {
+export const errorMessage = (state = null, action) => {
 
     switch (action.type) {
 
-        case FETCH_SCHEDULED_RECIPES_FAILURE:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
             return action.message;
 
-        case FETCH_SCHEDULED_RECIPES_REQUEST:
-        case FETCH_SCHEDULED_RECIPES_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
             return null;
+
+        default:
+            return state;
+    }
+};
+
+export const numFailures = (state = 0, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
+            return state + 1;
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+            return 0;
 
         default:
             return state;
@@ -70,8 +88,9 @@ const errorMessage = (state = null, action) => {
 const dayMeta = combineReducers({
     isFetching,
     isCache,
-    errorMessage
+    errorMessage,
+    numFailures
 });
 
 // May be undefined.
-export const getDayMeta = (state, date) => state[date];
+export const getDailyMetaForDate = (state, date) => state[date];

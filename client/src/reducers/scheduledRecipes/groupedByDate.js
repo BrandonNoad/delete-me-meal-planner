@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { FETCH_SCHEDULED_RECIPES_SUCCESS } from '../../actions';
+import * as actionTypes from '../../actions/actionTypes';
 
 const groupedByDate = (state = {}, action) => {
 
     switch (action.type) {
 
-        case FETCH_SCHEDULED_RECIPES_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
             return _.assign(
                 {},
                 state,
