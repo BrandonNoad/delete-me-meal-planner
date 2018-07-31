@@ -3,6 +3,7 @@
 const Server = require('./server');
 const apiFactory = require('./util/apiFactory');
 const orm = require('./orm');
+const PaginationHelper = require('./util/PaginationHelper');
 
 // Initialize the ORM.
 orm.init();
@@ -10,10 +11,29 @@ orm.init();
 const routeRegistrationOptions = { prefix: '/api/v1.0' };
 
 const pluginOptions = {
+    pagination: {
+        query: {
+            pagination: {
+                active: false
+            },
+            invalid: 'badRequest'
+        },
+        meta: {
+            location: 'header'
+        },
+        routes: {
+
+            // Disable pagination by default. Needs to be enabled on a per route basis.
+            include: []
+        }
+    },
     routes: {
         scheduledRecipe: {
            handlers: {
                scheduledRecipe: apiFactory('scheduledRecipe', 'handler')
+           },
+           helpers: {
+               pagination: PaginationHelper
            }
         }
     }
@@ -35,6 +55,11 @@ const manifest = {
     },
     register: {
         plugins: [
+            './plugins/TotalCount',
+            {
+                plugin: 'hapi-pagination',
+                options: pluginOptions.pagination
+            },
             {
                 plugin: './routes/ScheduledRecipe',
                 options: pluginOptions.routes.scheduledRecipe,

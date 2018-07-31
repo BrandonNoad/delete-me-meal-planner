@@ -12,6 +12,9 @@ const getRoutes = exports.getRoutes = (options) => {
     const optionsSchema = {
         handlers: Joi.object({
             scheduledRecipe: Joi.object().required()
+        }).required(),
+        helpers: Joi.object({
+            pagination: Joi.object().required()
         }).required()
     };
 
@@ -21,16 +24,24 @@ const getRoutes = exports.getRoutes = (options) => {
         new Error('Error registering scheduled-recipe-routes plugin')
     );
 
-    const { fetchForDate } = options.handlers.scheduledRecipe;
+    const { fetchForDatePaginated } = options.handlers.scheduledRecipe;
+
+    const { queryValidationSchema } = options.helpers.pagination;
 
     return [
         {
             method: 'GET',
             path: '/scheduledRecipes',
-            handler: fetchForDate,
+            handler: fetchForDatePaginated,
             options: {
+                plugins: {
+                    pagination: {
+                        enabled: true
+                    }
+                },
                 validate: {
                     query: {
+                        ...queryValidationSchema,
 
                         // use .raw() instead of .options({ convert: false })
                         // https://github.com/hapijs/joi/issues/762

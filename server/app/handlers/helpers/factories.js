@@ -1,11 +1,4 @@
 'use strict';
 
-exports.fetchScheduledRecipesForDateFactory = (ScheduledRecipeRepository) => async (date) => {
-
-    const results = await ScheduledRecipeRepository.fetchForDate(date);
-
-    return {
-        results,
-        totalCount: results.length
-    };
-};
+exports.fetchScheduledRecipesPageForDateFactory = (ScheduledRecipeRepository) =>
+        async (page, limit, date) => ScheduledRecipeRepository.fetchPageForDate(page, limit, date);

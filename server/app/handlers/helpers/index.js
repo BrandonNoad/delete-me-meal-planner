@@ -1,7 +1,6 @@
 'use strict';
 
-const { fetchScheduledRecipesForDateFactory } = require('./factories');
+const { fetchScheduledRecipesPageForDateFactory } = require('./factories');
 
-// TODO: paginate
-exports.fetchScheduledRecipesForDate =
-        fetchScheduledRecipesForDateFactory(require('../../repositories/ScheduledRecipeRepository'));
+exports.fetchScheduledRecipesPageForDate =
+        fetchScheduledRecipesPageForDateFactory(require('../../repositories/ScheduledRecipeRepository'));

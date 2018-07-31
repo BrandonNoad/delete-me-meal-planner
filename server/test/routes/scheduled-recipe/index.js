@@ -17,11 +17,16 @@ describe('scheduled-recipe-routes plugin', () => {
 
         const server = Hapi.server({ debug: false });
 
+        const PaginationHelper = require('../../../app/util/PaginationHelper');
+
         const scheduledRecipeRoutesOptions = {
             handlers: {
                 scheduledRecipe: {
-                    fetchForDate: Sinon.stub().returns('test')
+                    fetchForDatePaginated: Sinon.stub().returns('test')
                 }
+            },
+            helpers: {
+                pagination: PaginationHelper
             }
         };
 
@@ -41,6 +46,6 @@ describe('scheduled-recipe-routes plugin', () => {
             await server.register(plugins);
         });
 
-        describe('GET /scheduledRecipes?date=YYYY-MM-DD', require('./fetchForDate')(lab, server));
+        describe('GET /scheduledRecipes?date=YYYY-MM-DD', require('./fetchForDatePaginated')(lab, server));
     });
 });

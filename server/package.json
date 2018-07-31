@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/start.js",
   "scripts": {
-    "test": "lab -a code -t 100 -v",
+    "test": "lab -a code -t 100 -v --shuffle",
     "test-cov-html": "lab -r html -o coverage.html",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "npm run migrate && nodemon --watch app",
@@ -18,6 +18,7 @@
     "boom": "^7.2.0",
     "glue": "^5.0.0",
     "hapi": "^17.5.2",
+    "hapi-pagination": "^2.0.0",
     "joi": "^13.4.0",
     "joi-date-extensions": "^1.2.0",
     "knex": "^0.15.2",

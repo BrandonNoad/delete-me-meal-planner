@@ -5,7 +5,7 @@ const { expect, fail } = require('code');
 module.exports = ({ describe: context, afterEach, it }, server) => () => {
 
     const handler = server.app.testData.scheduledRecipeRoutesOptions
-        .handlers.scheduledRecipe.fetchForDate;
+        .handlers.scheduledRecipe.fetchForDatePaginated;
 
     afterEach(() => {
 

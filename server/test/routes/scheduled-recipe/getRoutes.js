@@ -10,16 +10,35 @@ module.exports = ({ describe: context, it }) => () => {
     const options = {
         handlers: {
             scheduledRecipe: {}
+        },
+        helpers: {
+            pagination: {}
         }
     };
 
-    context('when the options are missing the scheduledRecipes handler', function () {
+    context('when the options are missing the scheduledRecipes handler', () => {
 
         it('should throw an Error', async () => {
 
             try {
 
                 getRoutes(_.omit(options, 'handlers.scheduledRecipe'));
+
+                fail('This should never happen!');
+            } catch (err) {
+
+                expect(err).to.exist();
+            }
+        });
+    });
+
+    context('when the options are missing the pagination helper', () => {
+
+        it('should throw an Error', async () => {
+
+            try {
+
+                getRoutes(_.omit(options, 'helpers.pagination'));
 
                 fail('This should never happen!');
             } catch (err) {
