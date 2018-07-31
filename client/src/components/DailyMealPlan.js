@@ -10,7 +10,7 @@ const DailyMealPlan = ({ moment, scheduledRecipes }) => {
 
     let list = <ListPlaceholder emptyMessage="No Recipes!" unfilteredTotal={0} />;
 
-    if (scheduledRecipes.length) {
+    if (scheduledRecipes !== undefined && scheduledRecipes.length) {
 
         const recipeListItems = _.map(scheduledRecipes, scheduledRecipe => (
 

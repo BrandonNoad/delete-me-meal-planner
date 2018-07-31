@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchScheduledRecipesForDay } from '../actions';
-import { getScheduledRecipesForDay, getDailyMetaForDay } from '../reducers/scheduledRecipes';
+import { getScheduledRecipesForDay, getMetaForDay } from '../reducers/scheduledRecipes';
 import DailyMealPlan from '../components/DailyMealPlan';
 
 class DailyMealPlanContainer extends Component {
@@ -30,7 +30,7 @@ class DailyMealPlanContainer extends Component {
         // TODO: move the loading indicator inside the tile
         if (dayMeta !== undefined &&
             dayMeta.isFetching &&
-            !scheduledRecipes.length) {
+            (scheduledRecipes === undefined || !scheduledRecipes.length)) {
 
             return <p>Loading...</p>;
         }
@@ -38,7 +38,7 @@ class DailyMealPlanContainer extends Component {
         // TODO: move the error msg inside the tile
         if (dayMeta !== undefined &&
             dayMeta.errorMessage &&
-            !scheduledRecipes.length) {
+            (scheduledRecipes === undefined || !scheduledRecipes.length)) {
 
             return <p>{dayMeta.errorMessage}</p>;
         }
@@ -50,7 +50,7 @@ class DailyMealPlanContainer extends Component {
 const mapStateToProps = (state, ownProps) => (
     {
         scheduledRecipes: getScheduledRecipesForDay(state.scheduledRecipes, ownProps.moment),
-        dayMeta: getDailyMetaForDay(state.scheduledRecipes, ownProps.moment)
+        dayMeta: getMetaForDay(state.scheduledRecipes, ownProps.moment)
     }
 );
 

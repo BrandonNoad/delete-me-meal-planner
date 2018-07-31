@@ -1,36 +1,54 @@
+import _ from 'lodash';
 import { combineReducers } from 'redux';
-import groupedByDate, * as fromGroupedByDate from './groupedByDate';
-import dailyMeta, * as fromDailyMeta from './dailyMeta';
+import * as actionTypes from '../../actions/actionTypes';
+import data, * as fromData from './data';
+import meta, * as fromMeta from './meta';
 
-const scheduledRecipes = combineReducers({
-    groupedByDate,
-    dailyMeta
-});
+const scheduledRecipes = (state = {}, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
+            return _.assign(
+                {},
+                state,
+                { [action.date]: scheduledRecipesForDate(state[action.date], action) }
+            );
+
+        default:
+            return state;
+    }
+};
 
 export default scheduledRecipes;
+
+const scheduledRecipesForDate = combineReducers({
+    meta,
+    data
+});
 
 // export for testing
 export const getScheduledRecipesForDayFactory = (getScheduledRecipesForDate) =>
         (state, moment) => {
 
-    const { groupedByDate } = state;
-
     const date = moment.format('YYYY-MM-DD');
 
-    return getScheduledRecipesForDate(groupedByDate, date);
+    // state[date] may be undefined
+    return getScheduledRecipesForDate(state[date]);
 };
 
 export const getScheduledRecipesForDay =
-        getScheduledRecipesForDayFactory(fromGroupedByDate.getScheduledRecipesForDate);
+        getScheduledRecipesForDayFactory(fromData.getScheduledRecipesForDate);
 
 // export for testing
-export const getDailyMetaForDayFactory = (getDailyMetaForDate) => (state, moment) => {
-
-    const { dailyMeta } = state;
+export const getMetaForDayFactory = (getMetaForDate) => (state, moment) => {
 
     const date = moment.format('YYYY-MM-DD');
 
-    return getDailyMetaForDate(dailyMeta, date);
+    // state[date] may be undefined
+    return getMetaForDate(state[date]);
 };
 
-export const getDailyMetaForDay = getDailyMetaForDayFactory(fromDailyMeta.getDailyMetaForDate);
+export const getMetaForDay = getMetaForDayFactory(fromMeta.getMetaForDate);

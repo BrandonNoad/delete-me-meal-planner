@@ -47,13 +47,13 @@ describe('Action Creators', () => {
 
         describe('when day\'s metainformation is undefined', () => {
 
-            const getDailyMetaForDay = (state, moment) => undefined;
+            const getMetaForDay = (state, moment) => undefined;
 
             describe('and the API request is successful', () => {
 
                 const apiRequest = date => Promise.resolve({ data: scheduledRecipes });
 
-                const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                 const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 
@@ -76,7 +76,7 @@ describe('Action Creators', () => {
 
                 const apiRequest = date => Promise.reject(new Error(errorMsg));
 
-                const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                 const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 
@@ -96,7 +96,7 @@ describe('Action Creators', () => {
 
                     const apiRequest = date => Promise.reject('error');
 
-                    const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                    const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                     const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 
@@ -121,9 +121,9 @@ describe('Action Creators', () => {
 
             describe('when day\'s metainformation indicates an API request is already underway', () => {
 
-                const getDailyMetaForDay = (state, moment) => ({ isFetching: true });
+                const getMetaForDay = (state, moment) => ({ isFetching: true });
 
-                const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                 const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 
@@ -139,9 +139,9 @@ describe('Action Creators', () => {
 
             describe('when day\'s metainformation indicates a cached copy of the data exists', () => {
 
-                const getDailyMetaForDay = (state, moment) => ({ isCache: true });
+                const getMetaForDay = (state, moment) => ({ isCache: true });
 
-                const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                 const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 
@@ -157,9 +157,9 @@ describe('Action Creators', () => {
 
             describe('when day\'s metainformation indicates the request has failed 3 or more times', () => {
 
-                const getDailyMetaForDay = (state, moment) => ({ numFailures: 3 });
+                const getMetaForDay = (state, moment) => ({ numFailures: 3 });
 
-                const deps = { getDailyMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+                const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
                 const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
 

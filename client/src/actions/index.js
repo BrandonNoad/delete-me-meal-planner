@@ -1,6 +1,6 @@
 import * as api from '../api';
 import * as types from './actionTypes';
-import { getDailyMetaForDay } from '../reducers/scheduledRecipes';
+import { getMetaForDay } from '../reducers/scheduledRecipes';
 
 export const updateMoment = goto => ({
 
@@ -8,13 +8,13 @@ export const updateMoment = goto => ({
     goto
 });
 
-export const fetchScheduledRecipesForDayFactory = ({ getDailyMetaForDay, fetchScheduledRecipesForDay }) =>
+export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchScheduledRecipesForDay }) =>
         moment => async (dispatch, getState) => {
 
     const { scheduledRecipes: scheduledRecipesState } = getState();
 
     // May be undefined.
-    const dayMeta = getDailyMetaForDay(scheduledRecipesState, moment);
+    const dayMeta = getMetaForDay(scheduledRecipesState, moment);
 
     const MAX_REQUEST_FAILURES = 3;
 
@@ -51,6 +51,6 @@ export const fetchScheduledRecipesForDayFactory = ({ getDailyMetaForDay, fetchSc
 };
 
 export const fetchScheduledRecipesForDay = fetchScheduledRecipesForDayFactory({
-    getDailyMetaForDay,
+    getMetaForDay,
     fetchScheduledRecipesForDay: api.fetchScheduledRecipesForDay
 });

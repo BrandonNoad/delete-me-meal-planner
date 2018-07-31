@@ -1,9 +1,7 @@
-import dailyMeta, { isFetching, isCache, errorMessage, numFailures, getDailyMetaForDate }
-        from './dailyMeta';
+import { isFetching, isCache, errorMessage, numFailures, getMetaForDate } from './meta';
 import * as actionTypes from '../../actions/actionTypes';
 
 const date = '2018-07-27';
-const errorMsg = 'Error fetching data!';
 
 const fetchScheduledRecipesForDayRequest = () => ({
     type: actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST,
@@ -15,6 +13,8 @@ const fetchScheduledRecipesForDaySuccess = () => ({
     date,
     data: []
 });
+
+const errorMsg = 'Error fetching data!';
 
 const fetchScheduledRecipesForDayFailure = () => ({
     type: actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE,
@@ -224,241 +224,35 @@ describe('numFailures reducer', () => {
     });
 });
 
-describe('dailyMeta reducer', () => {
+describe('getMetaForDate selector', () => {
 
-    describe('when the state arg is undefined', () => {
-
-        it('should return the initial state', () => {
-
-            const newState = dailyMeta(undefined, {});
-
-            expect(newState).toEqual({});
-        });
-    });
-
-    it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST', () => {
-
-        let previousState = {};
-
-        let newState = dailyMeta(previousState, fetchScheduledRecipesForDayRequest());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: true,
-                isCache: false,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-
-        previousState = {
-            '2018-08-01': {
-                isFetching: false,
-                isCache: false,
-                errorMessage: 'error',
-                numFailures: 3
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDayRequest());
-
-        expect(newState).toEqual({
-            ...previousState,
-            [date]: {
-                isFetching: true,
-                isCache: false,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-
-        previousState = {
-            [date]: {
-                isFetching: false,
-                isCache: true,
-                errorMessage: null,
-                numFailures: 0
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDayRequest());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: true,
-                isCache: false,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-    });
-
-    it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS', () => {
-
-        let previousState = {};
-
-        let newState = dailyMeta(previousState, fetchScheduledRecipesForDaySuccess());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: false,
-                isCache: true,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-
-        previousState = {
-            '2018-08-01': {
-                isFetching: false,
-                isCache: false,
-                errorMessage: 'error',
-                numFailures: 3
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDaySuccess());
-
-        expect(newState).toEqual({
-            ...previousState,
-            [date]: {
-                isFetching: false,
-                isCache: true,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-
-        previousState = {
-            [date]: {
-                isFetching: false,
-                isCache: false,
-                errorMessage: 'error',
-                numFailures: 3
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDaySuccess());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: false,
-                isCache: true,
-                errorMessage: null,
-                numFailures: 0
-            }
-        });
-    });
-
-    it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE', () => {
-
-        let previousState = {};
-
-        let newState = dailyMeta(previousState, fetchScheduledRecipesForDayFailure());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: false,
-                isCache: false,
-                errorMessage: errorMsg,
-                numFailures: 1
-            }
-        });
-
-        previousState = {
-            '2018-08-01': {
-                isFetching: false,
-                isCache: false,
-                errorMessage: 'error',
-                numFailures: 3
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDayFailure());
-
-        expect(newState).toEqual({
-            ...previousState,
-            [date]: {
-                isFetching: false,
-                isCache: false,
-                errorMessage: errorMsg,
-                numFailures: 1
-            }
-        });
-
-        previousState = {
-            [date]: {
-                isFetching: false,
-                isCache: false,
-                errorMessage: 'error',
-                numFailures: 3
-            }
-        };
-
-        newState = dailyMeta(previousState, fetchScheduledRecipesForDayFailure());
-
-        expect(newState).toEqual({
-            [date]: {
-                isFetching: false,
-                isCache: false,
-                errorMessage: errorMsg,
-                numFailures: 4
-            }
-        });
-    });
-});
-
-describe('getDailyMetaForDate selector', () => {
-
-    describe('when there is no metadata for the given date', () => {
+    describe('when state is undefined', () => {
 
         it('should return undefined', () => {
 
-            let state = {};
+            const state = undefined;
 
-            const date = '2018-08-01';
-
-            let dayMeta = getDailyMetaForDate(state, date);
-
-            expect(dayMeta).toBe(undefined);
-
-            state = {
-                '2018-07-27': {
-                    isFetching: false,
-                    isCache: true,
-                    errorMessage: null,
-                    numFailures: 0
-                }
-            };
-
-            dayMeta = getDailyMetaForDate(state, date);
+            const dayMeta = getMetaForDate(state);
 
             expect(dayMeta).toBe(undefined);
         });
     });
 
-    describe('when there exists metadata for the given date', () => {
+    describe('when state is not undefined', () => {
 
         it('should return the metadata', () => {
 
-            const date = '2018-08-01';
-
             const state = {
-                '2018-07-27': {
-                    isFetching: false,
-                    isCache: true,
-                    errorMessage: null,
-                    numFailures: 0
-                },
-                [date]: {
+                meta: {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
                     numFailures: 2
-                }
+                },
+                data: []
             };
 
-            const dayMeta = getDailyMetaForDate(state, date);
+            const dayMeta = getMetaForDate(state);
 
             expect(dayMeta).toEqual({
                 isFetching: false,

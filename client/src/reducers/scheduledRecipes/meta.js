@@ -2,26 +2,6 @@ import _ from 'lodash';
 import { combineReducers } from 'redux';
 import * as actionTypes from '../../actions/actionTypes';
 
-const dailyMeta = (state = {}, action) => {
-
-    switch (action.type) {
-
-        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST:
-        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
-        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE:
-            return _.assign(
-                {},
-                state,
-                { [action.date]: dayMeta(state[action.date], action) }
-            );
-
-        default:
-            return state;
-    }
-};
-
-export default dailyMeta;
-
 export const isFetching = (state = false, action) => {
 
     switch (action.type) {
@@ -85,12 +65,16 @@ export const numFailures = (state = 0, action) => {
     }
 };
 
-const dayMeta = combineReducers({
+const meta = combineReducers({
     isFetching,
     isCache,
     errorMessage,
     numFailures
 });
 
-// May be undefined.
-export const getDailyMetaForDate = (state, date) => state[date];
+export default meta;
+
+// May be undefined (e.g. state is undefined).
+export const getMetaForDate = (state) => _.has(state, 'meta') ?
+    state.meta :
+    state;
