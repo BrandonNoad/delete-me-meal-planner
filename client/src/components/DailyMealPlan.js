@@ -3,8 +3,9 @@ import Moment from 'moment';
 import _ from 'lodash';
 import { Box, Tile, Label, Heading, List, ListItem, Button } from 'grommet';
 import { ListPlaceholder } from 'grommet-addons';
+import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
 
-const DailyMealPlan = ({ moment, scheduledRecipes }) => {
+const DailyMealPlan = ({ moment, scheduledRecipes, meta }) => {
 
     const isToday = Moment().isSame(moment, 'day');
 
@@ -12,7 +13,11 @@ const DailyMealPlan = ({ moment, scheduledRecipes }) => {
 
     if (scheduledRecipes !== undefined && scheduledRecipes.length) {
 
-        const recipeListItems = _.map(scheduledRecipes, scheduledRecipe => (
+        const NUM_VISIBLE_LIST_ITEMS = 3;
+
+        const numListItems = Math.min(NUM_VISIBLE_LIST_ITEMS, FETCH_SCHEDULED_RECIPES_LIMIT);
+
+        const recipeListItems = _.map(scheduledRecipes.slice(0, numListItems), scheduledRecipe => (
 
             <ListItem key={scheduledRecipe.id.toString()} pad="none" justify="between">
                 <a href={scheduledRecipe.recipe.url} target="_blank">{scheduledRecipe.recipe.name}</a>
@@ -20,13 +25,24 @@ const DailyMealPlan = ({ moment, scheduledRecipes }) => {
             </ListItem>
         ));
 
+        if (meta !== undefined && meta.totalCount > numListItems) {
+
+            const numAdditionalRecipes = meta.totalCount - numListItems;
+
+            recipeListItems.push(
+                <ListItem key="0" pad="none">
+                    <a href="" target="_blank">{`+ ${numAdditionalRecipes} more ${(numAdditionalRecipes > 1) ? 'recipes' : 'recipe'}!`}</a>
+                </ListItem>
+            );
+        }
+
         list = <List>{recipeListItems}</List>;
     }
 
     return (
-        <Tile size={{ width: 'small', height: 'medium' }} style={{ border: '1px solid #ddd' }} align="start" pad="small" colorIndex={isToday && 'grey-4-a'}>
-            <Label size="small" uppercase={true} style={{ color: isToday && '#e6734b' }}>{moment.format('ddd')}</Label>
-            <Heading tag="h2" strong={true} margin="small" style={{ marginTop: 0, color: isToday && '#e6734b' }}>{moment.format('D')}</Heading>
+        <Tile size={{ width: 'small', height: 'medium' }} style={{ border: '1px solid #ddd' }} align="start" pad="small" colorIndex={(isToday && 'grey-4-a') || undefined}>
+            <Label size="small" uppercase={true} style={{ color: (isToday && '#e6734b') || undefined }}>{moment.format('ddd')}</Label>
+            <Heading tag="h2" strong={true} margin="small" style={{ marginTop: 0, color: (isToday && '#e6734b') || undefined }}>{moment.format('D')}</Heading>
             <Box flex="grow" justify="between" style={{ width: '100%' }}>
                 {list}
                 <Box direction="row" justify="end">

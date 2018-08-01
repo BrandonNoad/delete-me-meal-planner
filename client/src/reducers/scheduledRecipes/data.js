@@ -6,7 +6,7 @@ const data = (state = [], action) => {
     switch (action.type) {
 
         case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
-            return action.data;
+            return [...state, ...action.data];
 
         default:
             return state;

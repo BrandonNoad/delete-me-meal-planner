@@ -1,0 +1,1 @@
+export const FETCH_SCHEDULED_RECIPES_LIMIT = 2;

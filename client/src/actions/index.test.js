@@ -42,8 +42,23 @@ describe('Action Creators', () => {
                 id: 42,
                 dateScheduled: '2018-07-27',
                 recipe: { id: 99, name: 'recipe', url: 'www.recipe.com' }
+            },
+            {
+                id: 43,
+                dateScheduled: '2018-07-27',
+                recipe: { id: 23, name: 'recipe2', url: 'www.recipe2.com' }
             }
         ];
+
+        const totalCount = 3;
+
+        const headers = {
+            'x-total-count': totalCount,
+            link: '<http://localhost:3001/api/v1.0/scheduledRecipes?date=2018-07-24&limit=2&page=1>; rel="self", ' +
+            '<http://localhost:3001/api/v1.0/scheduledRecipes?date=2018-07-24&limit=2&page=1>; rel="first", ' +
+            '<http://localhost:3001/api/v1.0/scheduledRecipes?date=2018-07-24&limit=2&page=2>; rel="last", ' +
+            '<http://localhost:3001/api/v1.0/scheduledRecipes?date=2018-07-24&limit=2&page=2>; rel="next"'
+        };
 
         describe('when day\'s metainformation is undefined', () => {
 
@@ -51,7 +66,7 @@ describe('Action Creators', () => {
 
             describe('and the API request is successful', () => {
 
-                const apiRequest = date => Promise.resolve({ data: scheduledRecipes });
+                const apiRequest = date => Promise.resolve({ data: scheduledRecipes, headers });
 
                 const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
 
@@ -61,7 +76,8 @@ describe('Action Creators', () => {
 
                     const expectedActions = [
                         { type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST, date },
-                        { type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS, date, data: scheduledRecipes }
+                        { type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS, date,
+                                data: scheduledRecipes, nextPage: 2, totalCount }
                     ];
 
                     await store.dispatch(fetchScheduledRecipesForDay(moment));
@@ -117,7 +133,7 @@ describe('Action Creators', () => {
 
         describe('when day\'s metainformation is defined', () => {
 
-            const apiRequest = date => Promise.resolve({ data: scheduledRecipes });
+            const apiRequest = date => Promise.resolve({ data: scheduledRecipes, headers });
 
             describe('when day\'s metainformation indicates an API request is already underway', () => {
 
@@ -170,6 +186,40 @@ describe('Action Creators', () => {
                     await store.dispatch(fetchScheduledRecipesForDay(moment));
 
                     expect(store.getActions()).toEqual(expectedActions);
+                });
+            });
+
+            describe('when the day\'s metainformation would not prevent the request', () => {
+
+                const getMetaForDay = (state, moment) => ({
+                    isFetching: false,
+                    isCache: false,
+                    errorMessage: null,
+                    numFailures: 0,
+                    nextPage: 2,
+                    totalCount
+                });
+
+                describe('and the API request is successful', () => {
+
+                    const apiRequest = date => Promise.resolve({ data: scheduledRecipes, headers });
+
+                    const deps = { getMetaForDay, fetchScheduledRecipesForDay: apiRequest };
+
+                    const fetchScheduledRecipesForDay = ActionCreators.fetchScheduledRecipesForDayFactory(deps);
+
+                    it('should create FETCH_SCHEDULED_RECIPES_REQUEST and FETCH_SCHEDULED_RECIPES_SUCCESS actions', async () => {
+
+                        const expectedActions = [
+                            { type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST, date },
+                            { type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS, date,
+                                    data: scheduledRecipes, nextPage: 2, totalCount }
+                        ];
+
+                        await store.dispatch(fetchScheduledRecipesForDay(moment));
+
+                        expect(store.getActions()).toEqual(expectedActions);
+                    });
                 });
             });
         });

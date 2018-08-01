@@ -1,4 +1,5 @@
-import { isFetching, isCache, errorMessage, numFailures, getMetaForDate } from './meta';
+import { isFetching, isCache, errorMessage, numFailures, nextPage, totalCount, getMetaForDate }
+        from './meta';
 import * as actionTypes from '../../actions/actionTypes';
 
 const date = '2018-07-27';
@@ -8,10 +9,16 @@ const fetchScheduledRecipesForDayRequest = () => ({
     date
 });
 
+const nextPageConst = 2;
+
+const totalCountConst = 101;
+
 const fetchScheduledRecipesForDaySuccess = () => ({
     type: actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS,
     date,
-    data: []
+    data: [],
+    nextPage: nextPageConst,
+    totalCount: totalCountConst
 });
 
 const errorMsg = 'Error fetching data!';
@@ -221,6 +228,62 @@ describe('numFailures reducer', () => {
         newState = numFailures(previousState, fetchScheduledRecipesForDayFailure());
 
         expect(newState).toBe(6);
+    });
+});
+
+describe('nextPage reducer', () => {
+
+    describe('when the state arg is undefined', () => {
+
+        it('should return the initial state', () => {
+
+            const newState = nextPage(undefined, {});
+
+            expect(newState).toBe(1);
+        });
+    });
+
+    it('should set the new state to action.nextPage when the action type is FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS', () => {
+
+        let previousState = 1;
+
+        let newState = nextPage(previousState, fetchScheduledRecipesForDaySuccess());
+
+        expect(newState).toBe(nextPageConst);
+
+        previousState = 4;
+
+        newState = nextPage(previousState, fetchScheduledRecipesForDaySuccess());
+
+        expect(newState).toBe(nextPageConst);
+    });
+});
+
+describe('totalCount reducer', () => {
+
+    describe('when the state arg is undefined', () => {
+
+        it('should return the initial state', () => {
+
+            const newState = totalCount(undefined, {});
+
+            expect(newState).toBe(0);
+        });
+    });
+
+    it('should set the new state to action.totalCount when the action type is FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS', () => {
+
+        let previousState = 0;
+
+        let newState = totalCount(previousState, fetchScheduledRecipesForDaySuccess());
+
+        expect(newState).toBe(totalCountConst);
+
+        previousState = 50;
+
+        newState = totalCount(previousState, fetchScheduledRecipesForDaySuccess());
+
+        expect(newState).toBe(totalCountConst);
     });
 });
 

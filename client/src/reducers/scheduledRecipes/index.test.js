@@ -35,7 +35,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: true,
                     isCache: false,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -47,7 +49,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
-                    numFailures: 3
+                    numFailures: 3,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -62,7 +66,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: true,
                     isCache: false,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -74,7 +80,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: true,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -88,7 +96,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: true,
                     isCache: false,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -99,10 +109,16 @@ describe('scheduledRecipes reducer', () => {
 
         const date = '2017-07-31';
 
+        const nextPage = 2;
+
+        const totalCount = 42;
+
         const fetchScheduledRecipesForDaySuccess = () => ({
             type: actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS,
             date,
-            data: []
+            data: [],
+            nextPage,
+            totalCount
         });
 
         let previousState = {};
@@ -115,7 +131,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: true,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage,
+                    totalCount
                 },
                 data: []
             }
@@ -127,7 +145,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
-                    numFailures: 3
+                    numFailures: 3,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -142,7 +162,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: true,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage,
+                    totalCount
                 },
                 data: []
             }
@@ -154,7 +176,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
-                    numFailures: 3
+                    numFailures: 3,
+                    nextPage,
+                    totalCount
                 },
                 data: []
             }
@@ -168,7 +192,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: true,
                     errorMessage: null,
-                    numFailures: 0
+                    numFailures: 0,
+                    nextPage,
+                    totalCount
                 },
                 data: []
             }
@@ -197,7 +223,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: errorMsg,
-                    numFailures: 1
+                    numFailures: 1,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -209,7 +237,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
-                    numFailures: 3
+                    numFailures: 3,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -224,7 +254,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: errorMsg,
-                    numFailures: 1
+                    numFailures: 1,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -236,7 +268,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: 'error',
-                    numFailures: 3
+                    numFailures: 3,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -250,7 +284,9 @@ describe('scheduledRecipes reducer', () => {
                     isFetching: false,
                     isCache: false,
                     errorMessage: errorMsg,
-                    numFailures: 4
+                    numFailures: 4,
+                    nextPage: 1,
+                    totalCount: 0
                 },
                 data: []
             }
@@ -265,7 +301,9 @@ const stateForDate = {
         isFetching: false,
         isCache: false,
         errorMessage: 'error',
-        numFailures: 3
+        numFailures: 3,
+        nextPage: 1,
+        totalCount: 0
     },
     data: [
         {
@@ -288,7 +326,9 @@ const state = {
             isFetching: false,
             isCache: true,
             errorMessage: null,
-            numFailures: 0
+            numFailures: 0,
+            nextPage: 1,
+            totalCount: 0
         },
         data: []
     }

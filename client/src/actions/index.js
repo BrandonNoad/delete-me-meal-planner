@@ -1,6 +1,8 @@
 import * as api from '../api';
 import * as types from './actionTypes';
 import { getMetaForDay } from '../reducers/scheduledRecipes';
+import { getNextPage, getTotalCount } from '../util/paginationHelpers';
+import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
 
 export const updateMoment = goto => ({
 
@@ -33,12 +35,26 @@ export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchSchedul
 
     try {
 
-        const { data } = await fetchScheduledRecipesForDay(date);
+        const limit = FETCH_SCHEDULED_RECIPES_LIMIT;
+
+        const queryParams = { date, limit };
+
+        if (dayMeta !== undefined) {
+            queryParams.page = dayMeta.nextPage;
+        }
+
+        const { headers, data } = await fetchScheduledRecipesForDay(queryParams);
+
+        const nextPage = getNextPage(headers);
+
+        const totalCount = getTotalCount(headers);
 
         dispatch({
             type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS,
             date,
-            data
+            data,
+            nextPage,
+            totalCount
         });
     } catch (err) {
 

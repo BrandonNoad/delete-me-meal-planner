@@ -65,11 +65,37 @@ export const numFailures = (state = 0, action) => {
     }
 };
 
+export const nextPage = (state = 1, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+            return action.nextPage;
+
+        default:
+            return state;
+    }
+};
+
+export const totalCount = (state = 0, action) => {
+
+    switch (action.type) {
+
+        case actionTypes.FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS:
+            return action.totalCount;
+
+        default:
+            return state;
+    }
+};
+
 const meta = combineReducers({
     isFetching,
     isCache,
     errorMessage,
-    numFailures
+    numFailures,
+    nextPage,
+    totalCount
 });
 
 export default meta;

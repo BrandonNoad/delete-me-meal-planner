@@ -25,22 +25,22 @@ class DailyMealPlanContainer extends Component {
 
     render() {
 
-        const { dayMeta, scheduledRecipes } = this.props;
+        const { meta, scheduledRecipes } = this.props;
 
         // TODO: move the loading indicator inside the tile
-        if (dayMeta !== undefined &&
-            dayMeta.isFetching &&
+        if (meta !== undefined &&
+            meta.isFetching &&
             (scheduledRecipes === undefined || !scheduledRecipes.length)) {
 
             return <p>Loading...</p>;
         }
 
         // TODO: move the error msg inside the tile
-        if (dayMeta !== undefined &&
-            dayMeta.errorMessage &&
+        if (meta !== undefined &&
+            meta.errorMessage &&
             (scheduledRecipes === undefined || !scheduledRecipes.length)) {
 
-            return <p>{dayMeta.errorMessage}</p>;
+            return <p>{meta.errorMessage}</p>;
         }
 
         return <DailyMealPlan  {...this.props} />;
@@ -50,7 +50,7 @@ class DailyMealPlanContainer extends Component {
 const mapStateToProps = (state, ownProps) => (
     {
         scheduledRecipes: getScheduledRecipesForDay(state.scheduledRecipes, ownProps.moment),
-        dayMeta: getMetaForDay(state.scheduledRecipes, ownProps.moment)
+        meta: getMetaForDay(state.scheduledRecipes, ownProps.moment)
     }
 );
 
