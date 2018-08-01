@@ -4,15 +4,14 @@ const Lab = require('lab');
 const { before, beforeEach, describe, describe: context, it } = exports.lab = Lab.script();
 const { expect, fail } = require('code');
 
-describe('Scheduled Recipe Handlers', () => {
+describe('Recipe Handlers', () => {
 
-    const scheduledRecipeHandlersFactory = require('../../app/handlers/scheduledRecipeHandlersFactory');
+    const recipeHandlersFactory = require('../../app/handlers/recipeHandlersFactory');
 
-    describe('fetchForDatePaginated', () => {
+    describe('fetchAllPaginated', () => {
 
         const request = {
             query: {
-                date: '2018-07-25',
                 page: 1,
                 limit: 10
             },
@@ -25,11 +24,9 @@ describe('Scheduled Recipe Handlers', () => {
 
             let totalCount;
 
-            const fetchScheduledRecipesPageForDate = (page, limit, date) =>
-                    Promise.resolve({ results, totalCount });
+            const fetchRecipesPage = (page, limit) => Promise.resolve({ results, totalCount });
 
-            const ScheduledRecipeHandlers =
-                    scheduledRecipeHandlersFactory({ fetchScheduledRecipesPageForDate });
+            const RecipeHandlers = recipeHandlersFactory({ fetchRecipesPage });
 
             beforeEach(() => {
 
@@ -38,49 +35,45 @@ describe('Scheduled Recipe Handlers', () => {
                 delete request.plugins['total-count'];
             });
 
-            context('and there is at least one recipe scheduled on the given date', () => {
+            context('and there is at least one recipe', () => {
 
                 before(() => {
 
                     results = [
                         {
-                            id: 42,
-                            recipe: {
-                                id: 23,
-                                name: 'nom nom',
-                                url: 'https://nomnom.com'
-                            },
-                            dateScheduled: request.query.date
+                            id: 23,
+                            name: 'nom nom',
+                            url: 'https://nomnom.com'
                         }
                     ];
 
                     totalCount = 101;
                 });
 
-                it('should return a promise that is fulfilled with an array of scheduledRecipe objects',
+                it('should return a promise that is fulfilled with an array of recipe objects',
                         async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(result).to.equal(results);
                 });
 
                 it('should set request.totalCount for the hapi-pagination plugin', async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(request.totalCount).to.equal(totalCount);
                 });
 
                 it('should set request.plugins[\'total-count\'] for the total-count plugin', async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(request.plugins['total-count']).to.equal({ totalCount });
                 });
             });
 
-            context('and there are no recipes scheduled on the given date', () => {
+            context('and there are no recipes', () => {
 
                 before(() => {
 
@@ -91,21 +84,21 @@ describe('Scheduled Recipe Handlers', () => {
 
                 it('should return a promise that is fulfilled with an empty array', async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(result).to.equal([]);
                 });
 
                 it('should set request.totalCount to 0 for the hapi-pagination plugin', async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(request.totalCount).to.equal(totalCount);
                 });
 
                 it('should set request.plugins[\'total-count\'] to 0 for the total-count plugin', async () => {
 
-                    const result = await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    const result = await RecipeHandlers.fetchAllPaginated(request);
 
                     expect(request.plugins['total-count']).to.equal({ totalCount });
                 });
@@ -114,17 +107,16 @@ describe('Scheduled Recipe Handlers', () => {
 
         context('when the helper function fails', () => {
 
-            const fetchScheduledRecipesPageForDate = (page, limit, date) =>
+            const fetchRecipesPage = (page, limit) =>
                     Promise.reject(new Error('helper function failed!'));
 
-            const ScheduledRecipeHandlers =
-                    scheduledRecipeHandlersFactory({ fetchScheduledRecipesPageForDate });
+            const RecipeHandlers = recipeHandlersFactory({ fetchRecipesPage });
 
             it('should return a promise that is rejected', async () => {
 
                 try {
 
-                    await ScheduledRecipeHandlers.fetchForDatePaginated(request);
+                    await RecipeHandlers.fetchFAllPaginated(request);
 
                     fail('This should never happen!');
 

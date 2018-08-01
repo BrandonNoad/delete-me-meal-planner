@@ -43,7 +43,7 @@ module.exports = ({ describe: context, afterEach, it }, server) => () => {
 
             const url = '/scheduledRecipes?date=2018/07/25';
 
-            it('should call the route\'s handler', async () => {
+            it('should respond with status code 400 Bad Request', async () => {
 
                 const res = await server.inject({ url });
 

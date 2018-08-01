@@ -6,7 +6,7 @@ const { expect, fail } = require('code');
 
 describe('Handler Helpers', () => {
 
-    const { fetchScheduledRecipesPageForDateFactory } =
+    const { fetchScheduledRecipesPageForDateFactory, fetchRecipesPageFactory } =
             require('../../../app/handlers/helpers/factories');
 
     const ScheduledRecipeRepository = {};
@@ -93,6 +93,95 @@ describe('Handler Helpers', () => {
                 try {
 
                     await fetchScheduledRecipesPageForDate(page, limit, date);
+
+                    fail('This should never happen!');
+
+                } catch (err) {
+
+                    expect(err).to.exist().and.to.be.instanceOf(Error);
+                }
+            });
+        });
+    });
+
+    const RecipeRepository = {};
+
+    const fetchRecipesPage = fetchRecipesPageFactory(RecipeRepository);
+
+    describe('fetchRecipesPage', () => {
+
+        const page = 11;
+
+        const limit = 10;
+
+        context('when the data is accessed successfully from the repository', () => {
+
+            let results;
+
+            let totalCount;
+
+            before(() => {
+
+                RecipeRepository.fetchPage = (page, limit) =>
+                        Promise.resolve({ results, totalCount });
+            });
+
+            context('and there is at least one recipe', () => {
+
+                before(() => {
+
+                    results = [
+                        {
+                            id: 23,
+                            name: 'nom nom',
+                            url: 'https://nomnom.com'
+                        }
+                    ];
+
+                    totalCount = 101;
+                });
+
+                it('should return a promise that is fulfilled with an object that has a an array of recipe objects as the results and the total number of results for all pages as the totalCount', async () => {
+
+                    const result = await fetchRecipesPage(page, limit);
+
+                    expect(result).to.equal({ results, totalCount });
+                });
+            });
+
+            context('and there are no recipes', () => {
+
+                const page = 1;
+
+                before(() => {
+
+                    results = [];
+
+                    totalCount = 0;
+                });
+
+                it('should return a promise that is fulfilled with an object that has a an empty array as the results and 0 as the totalCount', async () => {
+
+                    const result = await fetchRecipesPage(page, limit);
+
+                    expect(result).to.equal({ results, totalCount });
+                });
+            });
+        });
+
+        context('when the data access fails', () => {
+
+            before(() => {
+
+                RecipeRepository.fetchForDate = (page, limit) =>
+                        Promise.reject(new Error('repository operation failed!'));
+            });
+
+            it('should return a promise that is rejected', async () => {
+
+                try {
+
+                    await fetchRecipesPage(page, limit);
 
                     fail('This should never happen!');
 
