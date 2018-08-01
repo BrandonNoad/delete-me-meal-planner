@@ -5,7 +5,7 @@ import { Box, Tile, Label, Heading, List, ListItem, Button } from 'grommet';
 import { ListPlaceholder } from 'grommet-addons';
 import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
 
-const DailyMealPlan = ({ moment, scheduledRecipes, meta }) => {
+const DailyMealPlan = ({ moment, scheduledRecipes, meta, openAddRecipesModal }) => {
 
     const isToday = Moment().isSame(moment, 'day');
 
@@ -46,7 +46,7 @@ const DailyMealPlan = ({ moment, scheduledRecipes, meta }) => {
             <Box flex="grow" justify="between" style={{ width: '100%' }}>
                 {list}
                 <Box direction="row" justify="end">
-                    <Button type="button" style={{ float: 'right' }} onClick={() => console.log('add recipes')} plain={true} label={<span className="fas fa-plus fa-xs"></span>} />
+                    <Button type="button" style={{ float: 'right' }} onClick={() => openAddRecipesModal(moment)} plain={true} label={<span className="fas fa-plus fa-xs"></span>} />
                 </Box>
             </Box>
         </Tile>

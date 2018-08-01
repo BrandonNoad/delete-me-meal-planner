@@ -10,6 +10,17 @@ export const updateMoment = goto => ({
     goto
 });
 
+export const openAddRecipesModal = moment => ({
+
+    type: types.OPEN_ADD_RECIPES_MODAL,
+    moment
+});
+
+export const closeAddRecipesModal = () => ({
+
+    type: types.CLOSE_ADD_RECIPES_MODAL
+});
+
 export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchScheduledRecipesForDay }) =>
         moment => async (dispatch, getState) => {
 

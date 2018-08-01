@@ -3,6 +3,7 @@ import { App, Box, Header, Title, Footer } from 'grommet';
 import WeeklyMealPlanContainer from '../containers/WeeklyMealPlanContainer';
 import WeekHeadingContainer from '../containers/WeekHeadingContainer';
 import GotoBox from '../components/GotoBox';
+import AddRecipesModalContainer from '../containers/AddRecipesModalContainer';
 
 const MealPlannerApp = () => (
 
@@ -16,6 +17,7 @@ const MealPlannerApp = () => (
                 <WeekHeadingContainer />
             </Box>
             <WeeklyMealPlanContainer />
+            <AddRecipesModalContainer />
         </Box>
         <Footer pad="small"></Footer>
     </App>

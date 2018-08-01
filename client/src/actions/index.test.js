@@ -24,6 +24,33 @@ describe('Action Creators', () => {
         });
     });
 
+    describe('openAddRecipesModal', () => {
+
+        it('should create an action to open the AddRecipesModal', () => {
+
+            const moment = Moment();
+
+            const expectedAction = {
+                type: types.OPEN_ADD_RECIPES_MODAL,
+                moment
+            };
+
+            expect(ActionCreators.openAddRecipesModal(moment)).toEqual(expectedAction);
+        });
+    });
+
+    describe('closeAddRecipesModal', () => {
+
+        it('should create an action to close the AddRecipesModal', () => {
+
+            const expectedAction = {
+                type: types.CLOSE_ADD_RECIPES_MODAL
+            };
+
+            expect(ActionCreators.closeAddRecipesModal()).toEqual(expectedAction);
+        });
+    });
+
     describe('fetchScheduledRecipesForDay', () => {
 
         const store = mockStore();

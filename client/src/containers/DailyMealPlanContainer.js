@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchScheduledRecipesForDay } from '../actions';
+import { fetchScheduledRecipesForDay, openAddRecipesModal } from '../actions';
 import { getScheduledRecipesForDay, getMetaForDay } from '../reducers/scheduledRecipes';
 import DailyMealPlan from '../components/DailyMealPlan';
 
@@ -56,7 +56,7 @@ const mapStateToProps = (state, ownProps) => (
 
 DailyMealPlanContainer = connect(
     mapStateToProps,
-    { fetchScheduledRecipes: fetchScheduledRecipesForDay }
+    { fetchScheduledRecipes: fetchScheduledRecipesForDay, openAddRecipesModal }
 )(DailyMealPlanContainer);
 
 export default DailyMealPlanContainer;
