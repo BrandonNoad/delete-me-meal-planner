@@ -35,7 +35,15 @@ const pluginOptions = {
            helpers: {
                pagination: PaginationHelper
            }
-        }
+        },
+        recipe: {
+            handlers: {
+                recipe: apiFactory('recipe', 'handler')
+            },
+            helpers: {
+                pagination: PaginationHelper
+            }
+         }
     }
 };
 
@@ -63,6 +71,11 @@ const manifest = {
             {
                 plugin: './routes/ScheduledRecipe',
                 options: pluginOptions.routes.scheduledRecipe,
+                routes: routeRegistrationOptions
+            },
+            {
+                plugin: './routes/Recipe',
+                options: pluginOptions.routes.recipe,
                 routes: routeRegistrationOptions
             }
         ]

@@ -11,6 +11,14 @@ const catalog = {
 
             return require('../handlers/scheduledRecipeHandlersFactory')(helpers);
         }
+    },
+    recipe: {
+        handler() {
+
+            const helpers = require('../handlers/helpers');
+
+            return require('../handlers/recipeHandlersFactory')(helpers);
+        }
     }
 };
 
