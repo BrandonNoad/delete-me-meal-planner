@@ -24,7 +24,7 @@ const getRoutes = exports.getRoutes = (options) => {
         new Error('Error registering recipe-routes plugin')
     );
 
-    const { fetchAllPaginated } = options.handlers.recipe;
+    const { fetchAllPaginated, fetchSuggestions } = options.handlers.recipe;
 
     const { queryValidationSchema } = options.helpers.pagination;
 
@@ -43,6 +43,11 @@ const getRoutes = exports.getRoutes = (options) => {
                     query: queryValidationSchema
                 }
             }
+        },
+        {
+            method: 'GET',
+            path: '/suggestedRecipes',
+            handler: fetchSuggestions
         }
     ];
 };

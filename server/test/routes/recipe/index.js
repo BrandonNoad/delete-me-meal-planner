@@ -22,7 +22,8 @@ describe('recipe-routes plugin', () => {
         const recipeRoutesOptions = {
             handlers: {
                 recipe: {
-                    fetchAllPaginated: Sinon.stub().returns('test')
+                    fetchAllPaginated: Sinon.stub().returns('test'),
+                    fetchSuggestions: Sinon.stub().returns('test')
                 }
             },
             helpers: {
@@ -47,5 +48,7 @@ describe('recipe-routes plugin', () => {
         });
 
         describe('GET /recipes', require('./fetchAllPaginated')(lab, server));
+
+        describe('GET /suggestedRecipes', require('./fetchSuggestions')(lab, server));
     });
 });

@@ -6,14 +6,17 @@ const { expect, fail } = require('code');
 
 describe('Handler Helpers', () => {
 
-    const { fetchScheduledRecipesPageForDateFactory, fetchRecipesPageFactory } =
-            require('../../../app/handlers/helpers/factories');
-
-    const ScheduledRecipeRepository = {};
-
-    const fetchScheduledRecipesPageForDate = fetchScheduledRecipesPageForDateFactory(ScheduledRecipeRepository);
+    const {
+        fetchScheduledRecipesPageForDateFactory,
+        fetchRecipesPageFactory,
+        fetchSuggestedRecipesFactory
+    } = require('../../../app/handlers/helpers/factories');
 
     describe('fetchScheduledRecipesPageForDate', () => {
+
+        const ScheduledRecipeRepository = {};
+
+        const fetchScheduledRecipesPageForDate = fetchScheduledRecipesPageForDateFactory(ScheduledRecipeRepository);
 
         const page = 11;
 
@@ -104,11 +107,11 @@ describe('Handler Helpers', () => {
         });
     });
 
-    const RecipeRepository = {};
-
-    const fetchRecipesPage = fetchRecipesPageFactory(RecipeRepository);
-
     describe('fetchRecipesPage', () => {
+
+        const RecipeRepository = {};
+
+        const fetchRecipesPage = fetchRecipesPageFactory(RecipeRepository);
 
         const page = 11;
 
@@ -182,6 +185,59 @@ describe('Handler Helpers', () => {
                 try {
 
                     await fetchRecipesPage(page, limit);
+
+                    fail('This should never happen!');
+
+                } catch (err) {
+
+                    expect(err).to.exist().and.to.be.instanceOf(Error);
+                }
+            });
+        });
+    });
+
+    describe('fetchSuggestedRecipes', () => {
+
+        const RecipeRepository = {};
+
+        const fetchSuggestedRecipes = fetchSuggestedRecipesFactory(RecipeRepository);
+
+        context('when the data is accessed successfully from the repository', () => {
+
+            const results = [
+                {
+                    id: 23,
+                    name: 'nom nom',
+                    url: 'https://nomnom.com'
+                }
+            ];
+
+            before(() => {
+
+                RecipeRepository.fetchSuggestions = () => Promise.resolve(results);
+            });
+
+            it('should return a promise that is fulfilled with an an array of recipe objects', async () => {
+
+                const result = await fetchSuggestedRecipes();
+
+                expect(result).to.equal(results);
+            });
+        });
+
+        context('when the data access fails', () => {
+
+            before(() => {
+
+                RecipeRepository.fetchSuggestions = () =>
+                        Promise.reject(new Error('repository operation failed!'));
+            });
+
+            it('should return a promise that is rejected', async () => {
+
+                try {
+
+                    await fetchSuggestedRecipes();
 
                     fail('This should never happen!');
 

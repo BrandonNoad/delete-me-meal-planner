@@ -127,4 +127,54 @@ describe('Recipe Handlers', () => {
             });
         });
     });
+
+    describe('fetchSuggestions', () => {
+
+        const request = {};
+
+        context('when the helper function succeeds', () => {
+
+            const results = [
+                {
+                    id: 23,
+                    name: 'nom nom',
+                    url: 'https://nomnom.com'
+                }
+            ];
+
+            const fetchSuggestedRecipes = () => Promise.resolve(results);
+
+            const RecipeHandlers = recipeHandlersFactory({ fetchSuggestedRecipes });
+
+            it('should return a promise that is fulfilled with an array of recipe objects',
+                    async () => {
+
+                const result = await RecipeHandlers.fetchSuggestions(request);
+
+                expect(result).to.equal(results);
+            });
+        });
+
+        context('when the helper function fails', () => {
+
+            const fetchSuggestedRecipes = () =>
+                    Promise.reject(new Error('helper function failed!'));
+
+            const RecipeHandlers = recipeHandlersFactory({ fetchSuggestedRecipes });
+
+            it('should return a promise that is rejected', async () => {
+
+                try {
+
+                    await RecipeHandlers.fetchSuggestions(request);
+
+                    fail('This should never happen!');
+
+                } catch (err) {
+
+                    expect(err).to.exist().and.to.be.instanceOf(Error);
+                }
+            });
+        });
+    });
 });

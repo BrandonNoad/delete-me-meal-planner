@@ -15,3 +15,16 @@ exports.fetchPage = async (page, limit) => {
         totalCount: result.total
     };
 };
+
+// Returns the top 10 most scheduled recipes. If less than 10 recipes have been scheduled, it uses
+// the most recently created recipes to get the result size to 10.
+// TODO: use constant for the limit (e.g. MAX_SUGGESTIONS).
+exports.fetchSuggestions = () => fetchCommon()
+    .select(
+        'recipes.*',
+        Recipe.relatedQuery('scheduledRecipes').count().as('num_scheduled_recipes')
+    )
+    .orderBy('num_scheduled_recipes', 'desc')
+    .orderBy('created_at', 'desc')
+    .limit(10)
+    .map(instance => instance.toJSON());

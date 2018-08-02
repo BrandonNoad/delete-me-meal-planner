@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = ({ fetchRecipesPage }) => ({
+module.exports = ({ fetchRecipesPage, fetchSuggestedRecipes }) => ({
 
     /**
      * Fetch all recipes paginated.
@@ -22,5 +22,14 @@ module.exports = ({ fetchRecipesPage }) => ({
         };
 
         return results;
+    },
+
+    /**
+     * Fetch suggested recipes. The response contains at most MAX_SUGGESTIONS recipes.
+     *  - GET /suggestedRecipes
+     */
+    fetchSuggestions(request, h) {
+
+        return fetchSuggestedRecipes();
     }
 });

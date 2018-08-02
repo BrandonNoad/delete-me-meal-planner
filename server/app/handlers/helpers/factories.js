@@ -1,7 +1,10 @@
 'use strict';
 
 exports.fetchScheduledRecipesPageForDateFactory = (ScheduledRecipeRepository) =>
-        async (page, limit, date) => ScheduledRecipeRepository.fetchPageForDate(page, limit, date);
+        (page, limit, date) => ScheduledRecipeRepository.fetchPageForDate(page, limit, date);
 
-exports.fetchRecipesPageFactory = (RecipeRepository) => async (page, limit) =>
+exports.fetchRecipesPageFactory = (RecipeRepository) => (page, limit) =>
         RecipeRepository.fetchPage(page, limit);
+
+exports.fetchSuggestedRecipesFactory = (RecipeRepository) => () =>
+        RecipeRepository.fetchSuggestions();
