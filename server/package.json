@@ -27,9 +27,8 @@
     "pg": "^7.4.3"
   },
   "devDependencies": {
-    "code": "^5.2.0",
     "concurrently": "^3.6.0",
-    "lab": "^15.5.0",
+    "jest": "^24.1.0",
     "nodemon": "^1.18.3",
     "sinon": "^6.1.4",
     "sqlite3": "^4.0.2"

@@ -17,10 +17,11 @@ const factory = (exports.factory = (getOnPostHandler) => ({
     }
 }));
 
+const defaultTotalCountHeaderName = (exports.defaultTotalCountHeaderName = 'X-Total-Count');
+
 // Gets the onPostHandler handler for the total-count plugin.
 const getOnPostHandler = (exports.getOnPostHandler = (options) => {
-    // Default header name is 'X-Total-Count'.
-    const totalCountHeaderName = _get(options, 'totalCountHeaderName', 'X-Total-Count');
+    const totalCountHeaderName = _get(options, 'totalCountHeaderName', defaultTotalCountHeaderName);
 
     return async (request, h) => {
         // Make sure the total count is an integer.
