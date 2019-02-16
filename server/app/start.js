@@ -1,12 +1,11 @@
 'use strict';
 
 const Server = require('./server');
-const apiFactory = require('./util/apiFactory');
 const orm = require('./orm');
-const PaginationHelper = require('./util/PaginationHelper');
+const knexConfig = require('../knexfile');
 
 // Initialize the ORM.
-orm.init();
+orm.init(knexConfig);
 
 const routeRegistrationOptions = { prefix: '/api/v1.0' };
 
@@ -22,28 +21,9 @@ const pluginOptions = {
             location: 'header'
         },
         routes: {
-
             // Disable pagination by default. Needs to be enabled on a per route basis.
             include: []
         }
-    },
-    routes: {
-        scheduledRecipe: {
-           handlers: {
-               scheduledRecipe: apiFactory('scheduledRecipe', 'handler')
-           },
-           helpers: {
-               pagination: PaginationHelper
-           }
-        },
-        recipe: {
-            handlers: {
-                recipe: apiFactory('recipe', 'handler')
-            },
-            helpers: {
-                pagination: PaginationHelper
-            }
-         }
     }
 };
 
@@ -69,13 +49,11 @@ const manifest = {
                 options: pluginOptions.pagination
             },
             {
-                plugin: './routes/ScheduledRecipe',
-                options: pluginOptions.routes.scheduledRecipe,
+                plugin: './routes/scheduled-recipe',
                 routes: routeRegistrationOptions
             },
             {
-                plugin: './routes/Recipe',
-                options: pluginOptions.routes.recipe,
+                plugin: './routes/recipe',
                 routes: routeRegistrationOptions
             }
         ]
@@ -83,7 +61,6 @@ const manifest = {
 };
 
 const composeOptions = {
-
     // File-system path string that is used to resolve loading modules with require. Used in
     // register.plugins[].
     // __dirname is the name of the directory that the currently executing script resides in
@@ -92,19 +69,16 @@ const composeOptions = {
 
 // Exit gracefully on various events/signals
 const exitHandler = (options, err) => {
-
     if (err) {
         console.log('error', err.stack);
     }
 
     if (options.cleanUp) {
-
         // clean up!
         // TODO: clean up db using ORM?
     }
 
     if (options.exit) {
-
         // goodbye!
         process.exit();
     }
@@ -122,26 +96,21 @@ process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 // the SIGUSR2 signal is used by nodemon to restart
 // https://github.com/remy/nodemon#controlling-shutdown-of-your-script
 process.once('SIGUSR2', () => {
-
     exitHandler({ cleanUp: true });
     process.kill(process.pid, 'SIGUSR2');
 });
 
 // Start the server
 (async function startServer() {
-
     try {
-
         const server = await Server.init(manifest, composeOptions);
 
         server.log(['info'], `Server started at: ${server.info.uri}`);
-
     } catch (err) {
-
         // server failed to start properly...abort
         console.log('error', `Server failure: ${err}`);
 
         // clean up!
         exitHandler({ cleanUp: true });
     }
-}());
+})();

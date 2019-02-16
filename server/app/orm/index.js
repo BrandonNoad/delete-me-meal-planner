@@ -2,10 +2,8 @@
 
 const Knex = require('knex');
 const { Model } = require('objection');
-const knexConfig = require('../../knexfile');
 
-exports.init = () => {
-
+exports.init = (knexConfig) => {
     const environment = process.env.NODE_ENV || 'development';
 
     if (knexConfig[environment] === undefined) {

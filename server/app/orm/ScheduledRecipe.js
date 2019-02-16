@@ -1,15 +1,12 @@
-const { BaseModel } = require('./BaseModel');
+const BaseModel = require('./BaseModel');
 const { BelongsToOneRelation } = require('objection');
 
 class ScheduledRecipe extends BaseModel {
-
     static get tableName() {
-
         return 'scheduled_recipes';
     }
 
     static get relationMappings() {
-
         const Recipe = require('./Recipe');
 
         return {
