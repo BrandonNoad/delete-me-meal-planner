@@ -1,15 +1,10 @@
-import Sinon from 'sinon';
 import Moment from 'moment';
-import scheduledRecipes, { getScheduledRecipesForDayFactory, getMetaForDayFactory }
-        from './index';
+import scheduledRecipes, { getScheduledRecipesForDayFactory, getMetaForDayFactory } from './index';
 import * as actionTypes from '../../actions/actionTypes';
 
 describe('scheduledRecipes reducer', () => {
-
     describe('when the state arg is undefined', () => {
-
         it('should return the initial state', () => {
-
             const newState = scheduledRecipes(undefined, {});
 
             expect(newState).toEqual({});
@@ -17,7 +12,6 @@ describe('scheduledRecipes reducer', () => {
     });
 
     it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_REQUEST', () => {
-
         const date = '2017-07-31';
 
         const fetchScheduledRecipesForDayRequest = () => ({
@@ -106,7 +100,6 @@ describe('scheduledRecipes reducer', () => {
     });
 
     it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_SUCCESS', () => {
-
         const date = '2017-07-31';
 
         const nextPage = 2;
@@ -202,7 +195,6 @@ describe('scheduledRecipes reducer', () => {
     });
 
     it('should handle FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE', () => {
-
         const date = '2017-07-31';
 
         const errorMsg = 'Error fetching data!';
@@ -337,29 +329,25 @@ const state = {
 const moment = Moment(date);
 
 describe('getScheduledRecipesForDay selector', () => {
-
-    const getScheduledRecipesForDate = Sinon.spy();
+    const getScheduledRecipesForDate = jest.fn();
 
     const getScheduledRecipesForDay = getScheduledRecipesForDayFactory(getScheduledRecipesForDate);
 
     it('should call the data selector with the correct state', () => {
-
         getScheduledRecipesForDay(state, moment);
 
-        expect(getScheduledRecipesForDate.calledWith(stateForDate)).toBe(true);
+        expect(getScheduledRecipesForDate).toHaveBeenCalledWith(stateForDate);
     });
 });
 
 describe('getMetaForDay selector', () => {
-
-    const getMetaForDate = Sinon.spy();
+    const getMetaForDate = jest.fn();
 
     const getMetaForDay = getMetaForDayFactory(getMetaForDate);
 
     it('should call the meta selector with the correct state', () => {
-
         getMetaForDay(state, moment);
 
-        expect(getMetaForDate.calledWith(stateForDate)).toBe(true);
+        expect(getMetaForDate).toHaveBeenCalledWith(stateForDate);
     });
 });
