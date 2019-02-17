@@ -4,6 +4,5 @@ import Moment from 'moment';
 import WeeklyMealPlan from './WeeklyMealPlan';
 
 it('renders without crashing', () => {
-
-    shallow(<WeeklyMealPlan moment={Moment()}/>);
+    shallow(<WeeklyMealPlan moment={Moment()} />);
 });

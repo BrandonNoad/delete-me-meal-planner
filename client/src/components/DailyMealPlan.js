@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Moment from 'moment';
 import _ from 'lodash';
 import { Box, Heading, Button } from 'grommet';
@@ -7,7 +7,35 @@ import ListItem from './ListItem';
 import { ListPlaceholder } from 'grommet-addons';
 import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
 
-const DailyMealPlan = ({ moment, scheduledRecipes, meta, openAddRecipesModal }) => {
+const DailyMealPlan = (props) => {
+    const { moment, scheduledRecipes, meta, fetchScheduledRecipes } = props;
+
+    useEffect(() => {
+        fetchScheduledRecipes(moment);
+    }, [moment]);
+
+    // TODO: move the loading indicator inside the tile
+    if (
+        meta !== undefined &&
+        meta.isFetching &&
+        (scheduledRecipes === undefined || !scheduledRecipes.length)
+    ) {
+        return <p>Loading...</p>;
+    }
+
+    // TODO: move the error msg inside the tile
+    if (
+        meta !== undefined &&
+        meta.errorMessage &&
+        (scheduledRecipes === undefined || !scheduledRecipes.length)
+    ) {
+        return <p>{meta.errorMessage}</p>;
+    }
+
+    return <MealPlan {...props} />;
+};
+
+const MealPlan = ({ moment, scheduledRecipes, meta, openAddRecipesModal }) => {
     const isToday = Moment().isSame(moment, 'day');
 
     let list = <ListPlaceholder emptyMessage="No Recipes!" unfilteredTotal={0} />;

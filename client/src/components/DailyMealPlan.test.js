@@ -4,6 +4,5 @@ import { shallow } from 'enzyme';
 import DailyMealPlan from './DailyMealPlan';
 
 it('renders without crashing', () => {
-
     shallow(<DailyMealPlan moment={Moment()} scheduledRecipes={[]} />);
 });

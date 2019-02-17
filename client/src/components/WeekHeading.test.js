@@ -4,6 +4,5 @@ import Moment from 'moment';
 import WeekHeading from './WeekHeading';
 
 it('renders without crashing', () => {
-
-    shallow(<WeekHeading moment={Moment()}/>);
+    shallow(<WeekHeading moment={Moment()} />);
 });
