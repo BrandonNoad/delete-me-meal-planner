@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import configureStore from './configureStore';
 import registerServiceWorker from './registerServiceWorker';
 import MealPlannerApp from './components/MealPlannerApp';
-import '../node_modules/grommet/grommet-hpinc.min.css';
 
 const store = configureStore();
 

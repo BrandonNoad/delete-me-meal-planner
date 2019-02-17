@@ -1,26 +1,30 @@
 import React from 'react';
-import { App, Box, Header, Title, Footer } from 'grommet';
+import { Grommet, Box } from 'grommet';
+import { hp } from 'grommet-theme-hp';
 import WeeklyMealPlanContainer from '../containers/WeeklyMealPlanContainer';
 import WeekHeadingContainer from '../containers/WeekHeadingContainer';
 import GotoBox from '../components/GotoBox';
 import AddRecipesModalContainer from '../containers/AddRecipesModalContainer';
 
 const MealPlannerApp = () => (
-
-    <App centered={false}>
-        <Header fixed={true} colorIndex="brand" pad="small">
+    <Grommet theme={hp}>
+        {/* <Header fixed={true} colorIndex="brand" pad="small">
             <Title>Meal Planner</Title>
-        </Header>
+        </Header> */}
         <Box pad={{ vertical: 'small', horizontal: 'medium' }}>
-            <Box direction="row" align="baseline" margin={{ horizontal: 'none', top: 'none', bottom: 'small' }}>
+            <Box
+                direction="row"
+                align="baseline"
+                margin={{ horizontal: 'none', top: 'none', bottom: 'small' }}
+            >
                 <GotoBox />
                 <WeekHeadingContainer />
             </Box>
             <WeeklyMealPlanContainer />
-            <AddRecipesModalContainer />
+            {/* <AddRecipesModalContainer /> */}
         </Box>
-        <Footer pad="small"></Footer>
-    </App>
+        {/* <Footer pad="small" /> */}
+    </Grommet>
 );
 
 export default MealPlannerApp;
