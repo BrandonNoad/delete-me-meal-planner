@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchScheduledRecipesForDay, openAddRecipesModal } from '../actions';
+import { fetchScheduledRecipesForDay, showModal } from '../actions';
 import { getScheduledRecipesForDay, getMetaForDay } from '../reducers/scheduledRecipes';
 import DailyMealPlan from '../components/DailyMealPlan';
 
@@ -10,5 +10,5 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(
     mapStateToProps,
-    { fetchScheduledRecipes: fetchScheduledRecipesForDay, openAddRecipesModal }
+    { fetchScheduledRecipes: fetchScheduledRecipesForDay, showModal }
 )(DailyMealPlan);

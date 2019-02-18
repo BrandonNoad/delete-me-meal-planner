@@ -4,26 +4,25 @@ import { getMetaForDay } from '../reducers/scheduledRecipes';
 import { getNextPage, getTotalCount } from '../util/paginationHelpers';
 import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
 
-export const updateMoment = goto => ({
-
+export const updateMoment = (goto) => ({
     type: types.UPDATE_MOMENT,
     goto
 });
 
-export const openAddRecipesModal = moment => ({
-
-    type: types.OPEN_ADD_RECIPES_MODAL,
-    moment
+export const showModal = (modalType, modalProps) => ({
+    type: types.SHOW_MODAL,
+    modalType,
+    modalProps
 });
 
-export const closeAddRecipesModal = () => ({
-
-    type: types.CLOSE_ADD_RECIPES_MODAL
+export const hideModal = () => ({
+    type: types.HIDE_MODAL
 });
 
-export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchScheduledRecipesForDay }) =>
-        moment => async (dispatch, getState) => {
-
+export const fetchScheduledRecipesForDayFactory = ({
+    getMetaForDay,
+    fetchScheduledRecipesForDay
+}) => (moment) => async (dispatch, getState) => {
     const { scheduledRecipes: scheduledRecipesState } = getState();
 
     // May be undefined.
@@ -31,9 +30,10 @@ export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchSchedul
 
     const MAX_REQUEST_FAILURES = 3;
 
-    if (dayMeta !== undefined &&
-        (dayMeta.isFetching || dayMeta.isCache || dayMeta.numFailures >= MAX_REQUEST_FAILURES)) {
-
+    if (
+        dayMeta !== undefined &&
+        (dayMeta.isFetching || dayMeta.isCache || dayMeta.numFailures >= MAX_REQUEST_FAILURES)
+    ) {
         return;
     }
 
@@ -45,7 +45,6 @@ export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchSchedul
     });
 
     try {
-
         const limit = FETCH_SCHEDULED_RECIPES_LIMIT;
 
         const queryParams = { date, limit };
@@ -68,7 +67,6 @@ export const fetchScheduledRecipesForDayFactory = ({ getMetaForDay, fetchSchedul
             totalCount
         });
     } catch (err) {
-
         dispatch({
             type: types.FETCH_SCHEDULED_RECIPES_FOR_DAY_FAILURE,
             date,

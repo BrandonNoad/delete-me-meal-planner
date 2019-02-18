@@ -5,7 +5,7 @@ import { Box, Heading, Button } from 'grommet';
 import List from './List';
 import ListItem from './ListItem';
 import { ListPlaceholder } from 'grommet-addons';
-import { FETCH_SCHEDULED_RECIPES_LIMIT } from '../constants';
+import { FETCH_SCHEDULED_RECIPES_LIMIT, MODAL_TYPE_ADD_RECIPES } from '../constants';
 
 const DailyMealPlan = (props) => {
     const { moment, scheduledRecipes, meta, fetchScheduledRecipes } = props;
@@ -35,7 +35,7 @@ const DailyMealPlan = (props) => {
     return <MealPlan {...props} />;
 };
 
-const MealPlan = ({ moment, scheduledRecipes, meta, openAddRecipesModal }) => {
+const MealPlan = ({ moment, scheduledRecipes, meta, showModal }) => {
     const isToday = Moment().isSame(moment, 'day');
 
     let list = <ListPlaceholder emptyMessage="No Recipes!" unfilteredTotal={0} />;
@@ -99,7 +99,7 @@ const MealPlan = ({ moment, scheduledRecipes, meta, openAddRecipesModal }) => {
                     <Button
                         type="button"
                         style={{ float: 'right' }}
-                        onClick={() => openAddRecipesModal(moment)}
+                        onClick={() => showModal(MODAL_TYPE_ADD_RECIPES, { moment })}
                         plain={true}
                         label={<span className="fas fa-plus fa-xs" />}
                     />

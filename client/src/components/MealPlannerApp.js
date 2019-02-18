@@ -4,7 +4,7 @@ import { hp } from 'grommet-theme-hp';
 import WeeklyMealPlanContainer from '../containers/WeeklyMealPlanContainer';
 import WeekHeadingContainer from '../containers/WeekHeadingContainer';
 import GotoBox from '../components/GotoBox';
-import AddRecipesModalContainer from '../containers/AddRecipesModalContainer';
+import ModalContainer from '../containers/ModalContainer';
 
 const MealPlannerApp = () => (
     <Grommet theme={hp}>
@@ -21,7 +21,7 @@ const MealPlannerApp = () => (
                 <WeekHeadingContainer />
             </Box>
             <WeeklyMealPlanContainer />
-            {/* <AddRecipesModalContainer /> */}
+            <ModalContainer />
         </Box>
         {/* <Footer pad="small" /> */}
     </Grommet>
