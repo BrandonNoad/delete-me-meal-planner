@@ -1,10 +1,8 @@
-// https://prettier.io/docs/en/options.html
 module.exports = {
-  trailingComma: 'es5',
-  bracketSpacing: true,
-  tabWidth: 2,
-  semi: false,
+  printWidth: 100,
+  tabWidth: 4,
   singleQuote: true,
+  trailingComma: 'none',
   arrowParens: 'always',
   overrides: [
     {

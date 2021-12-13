@@ -1,0 +1,439 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateSource",
+      "source": "DS"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "DS"
+      },
+      "argument": "provider",
+      "value": "\"sqlite\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "DS"
+      },
+      "argument": "url",
+      "value": "\"***\""
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Team"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Team",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Team",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Team",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Team",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Team",
+          "field": "updatedAt"
+        },
+        "directive": "updatedAt"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "TeamMember"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TeamMember",
+      "field": "team",
+      "type": "Team",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "team"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "team"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[teamId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "team"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TeamMember",
+      "field": "teamId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TeamMember",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TeamMember",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TeamMember",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TeamMember",
+          "field": "updatedAt"
+        },
+        "directive": "updatedAt"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "TeamMember"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "TeamMember"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[teamId, userId]"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Recipe"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "team",
+      "type": "Team",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "team"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "team"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[teamId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "team"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "teamId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "url",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "items",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Recipe",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Recipe",
+          "field": "updatedAt"
+        },
+        "directive": "updatedAt"
+      }
+    }
+  ]
+}
